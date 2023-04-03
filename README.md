@@ -1,3 +1,3 @@
-# Projet Pole Emploi
+# Chômage en deux mots
 
-Créez votre projet en cliquant sur le lien suivant : https://classroom.github.com/a/ydVNVKVO
+Authors: Emmanuel Aubertin & Yacine Trousselle
