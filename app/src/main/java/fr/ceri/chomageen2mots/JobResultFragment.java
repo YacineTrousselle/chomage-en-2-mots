@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import fr.ceri.chomageen2mots.databinding.FragmentSecondBinding;
+import fr.ceri.chomageen2mots.databinding.FragmentJobResultBinding;
 
 public class JobResultFragment extends Fragment {
 
-    private FragmentSecondBinding binding;
+    private FragmentJobResultBinding binding;
 
     @Override
     public View onCreateView(
@@ -21,7 +21,7 @@ public class JobResultFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentSecondBinding.inflate(inflater, container, false);
+        binding = FragmentJobResultBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
@@ -33,7 +33,7 @@ public class JobResultFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(JobResultFragment.this)
-                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
+                        .navigate(R.id.action_ResultFragment_to_SearchFragment);
             }
         });
     }
