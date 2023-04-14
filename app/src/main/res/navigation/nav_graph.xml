@@ -8,11 +8,11 @@
         android:id="@+id/JobSearchFragment"
         android:name="fr.ceri.chomageen2mots.JobSearchFragment"
         android:label="@string/search_job_label"
-        tools:layout="@layout/fragment_search">
-
+        tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_SeachFragment_to_ResultFragment"
-            app:destination="@id/JobResultFragment" />
+            android:id="@+id/action_SearchFragment_to_ResultFragment"
+            app:destination="@id/JobResultFragment"/>
+
     </fragment>
     <fragment
         android:id="@+id/JobResultFragment"
@@ -23,6 +23,7 @@
         <action
             android:id="@+id/action_ResultFragment_to_SearchFragment"
             app:destination="@id/JobSearchFragment" />
+        <argument android:name="keyword"/>
     </fragment>
 
 </navigation>
