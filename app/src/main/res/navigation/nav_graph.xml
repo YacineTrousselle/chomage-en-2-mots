@@ -11,7 +11,12 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_SearchFragment_to_ResultFragment"
-            app:destination="@id/JobResultFragment"/>
+            app:destination="@id/JobResultFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
 
     </fragment>
     <fragment
@@ -23,7 +28,10 @@
         <action
             android:id="@+id/action_ResultFragment_to_SearchFragment"
             app:destination="@id/JobSearchFragment" />
-        <argument android:name="keyword"/>
+        <argument
+            android:name="keyword"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
 
 </navigation>
