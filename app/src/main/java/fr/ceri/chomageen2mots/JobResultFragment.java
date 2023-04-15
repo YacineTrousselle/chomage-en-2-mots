@@ -10,14 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import java.util.Objects;
-
 import fr.ceri.chomageen2mots.databinding.FragmentJobResultBinding;
 
 public class JobResultFragment extends Fragment {
 
     private FragmentJobResultBinding binding;
     private String keyword;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
