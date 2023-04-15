@@ -21,7 +21,7 @@ public class PoleEmploiApi {
     private static final String ACCESS_TOKEN_REQUEST_URL = "https://entreprise.pole-emploi.fr/connexion/oauth2/access_token?realm=partenaire";
 
     private final PEInterface api;
-    private MutableLiveData<AccessToken> accessToken = new MutableLiveData<AccessToken>();
+    private final MutableLiveData<AccessToken> accessToken = new MutableLiveData<>();
     private long requestedAt = 0;
 
     public PoleEmploiApi() {
@@ -33,27 +33,43 @@ public class PoleEmploiApi {
     }
 
     public MutableLiveData<AccessToken> getAccessToken() {
-        if (accessToken.getValue() != null && accessToken.getValue().isValid(requestedAt)){
+        if (accessToken.getValue() != null && accessToken.getValue().isValid(requestedAt)) {
             return accessToken;
         }
 
         api.getAccessToken(ACCESS_TOKEN_REQUEST_URL, GRANT_TYPE, CLIENT_ID, CLIENT_SECRET, SCOPE)
-            .enqueue(
-                    new Callback<AccessToken>() {
-                        @Override
-                        public void onResponse(@NonNull Call<AccessToken> call, @NonNull Response<AccessToken> response) {
-                            accessToken.postValue(response.body());
-                            requestedAt = (new Date().getTime()) / 1000;
-                            Log.d("jean", "onResponse: " + response.body());
-                        }
+                .enqueue(
+                        new Callback<AccessToken>() {
+                            @Override
+                            public void onResponse(@NonNull Call<AccessToken> call, @NonNull Response<AccessToken> response) {
+                                accessToken.postValue(response.body());
+                                requestedAt = (new Date().getTime()) / 1000;
+                                Log.d("jean", "onResponse: " + response.body());
+                            }
 
-                        @Override
-                        public void onFailure(@NonNull Call<AccessToken> call, @NonNull Throwable t) {
-                            throw new RuntimeException(t);
+                            @Override
+                            public void onFailure(@NonNull Call<AccessToken> call, @NonNull Throwable t) {
+                                throw new RuntimeException(t);
+                            }
                         }
-                    }
-            );
+                );
         return accessToken;
+    }
+
+    public void search() {
+        api.search("Bearer " + getAccessToken().getValue()).enqueue(
+                new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Log.d("jean", "onResponse: " + response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        throw new RuntimeException(t);
+                    }
+                }
+        );
     }
 }
 
