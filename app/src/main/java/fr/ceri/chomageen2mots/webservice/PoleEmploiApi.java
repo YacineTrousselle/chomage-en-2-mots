@@ -1,10 +1,13 @@
 package fr.ceri.chomageen2mots.webservice;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import retrofit2.Call;
@@ -22,7 +25,7 @@ public class PoleEmploiApi {
 
     private final PEInterface api;
     private final MutableLiveData<AccessToken> accessToken = new MutableLiveData<>();
-    private long requestedAt = 0;
+    private final MutableLiveData<Long> requestedAt = new MutableLiveData<>((long) 0);
 
     public PoleEmploiApi() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -32,43 +35,53 @@ public class PoleEmploiApi {
         api = retrofit.create(PEInterface.class);
     }
 
-    public MutableLiveData<AccessToken> getAccessToken() {
-        if (accessToken.getValue() != null && accessToken.getValue().isValid(requestedAt)) {
-            return accessToken;
+    public void callApi(CallbackInterface callback) {
+        Log.d("jean", "callApi: " + accessToken + " " + requestedAt);
+        if (accessToken.getValue() != null && accessToken.getValue().isValid(requestedAt.getValue())) {
+            Log.d("jean", "there is a token " + accessToken.getValue());
+            callback.onTokenReceived(accessToken.getValue().getToken());
+        } else {
+            api.getAccessToken(ACCESS_TOKEN_REQUEST_URL, GRANT_TYPE, CLIENT_ID, CLIENT_SECRET, SCOPE)
+                    .enqueue(
+                            new Callback<AccessToken>() {
+                                @Override
+                                public void onResponse(@NonNull Call<AccessToken> call, @NonNull Response<AccessToken> response) {
+                                    accessToken.postValue(response.body());
+                                    requestedAt.postValue(new Date().getTime() / 1000);
+                                    callback.onTokenReceived(response.body().getToken());
+                                    Log.d("jean", "onResponse: " + response.body());
+                                }
+
+                                @Override
+                                public void onFailure(@NonNull Call<AccessToken> call, @NonNull Throwable t) {
+                                    throw new RuntimeException(t);
+                                }
+                            }
+                    );
         }
-
-        api.getAccessToken(ACCESS_TOKEN_REQUEST_URL, GRANT_TYPE, CLIENT_ID, CLIENT_SECRET, SCOPE)
-                .enqueue(
-                        new Callback<AccessToken>() {
-                            @Override
-                            public void onResponse(@NonNull Call<AccessToken> call, @NonNull Response<AccessToken> response) {
-                                accessToken.postValue(response.body());
-                                requestedAt = (new Date().getTime()) / 1000;
-                                Log.d("jean", "onResponse: " + response.body());
-                            }
-
-                            @Override
-                            public void onFailure(@NonNull Call<AccessToken> call, @NonNull Throwable t) {
-                                throw new RuntimeException(t);
-                            }
-                        }
-                );
-        return accessToken;
     }
 
-    public void search() {
-        api.search("Bearer " + getAccessToken().getValue()).enqueue(
-                new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        Log.d("jean", "onResponse: " + response.body());
-                    }
+    public void search(Context context, String keyword, int pagination) {
+        int nbOffre = ConfigurationParams.getNbOffreParPage(context);
+        String range = (nbOffre * pagination) + "-" + (nbOffre * (pagination + 1) - 1);
+        callApi(token ->
+            api.search("Bearer " + token, ConfigurationParams.getConfig(context), keyword, range).enqueue(
+                    new Callback<SearchResult>() {
+                        @Override
+                        public void onResponse(@NonNull Call<SearchResult> call, @NonNull Response<SearchResult> response) {
+                            Log.d("jean", String.valueOf(call.request().url()));
+                            if (response.code() == 200 || response.code() == 206) {
+                                assert response.body() != null;
+                                Log.d("jean", "onResponse: " + Arrays.toString(response.body().resultats.stream().map(offre -> offre.id).toArray()));
+                            }
+                        }
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        throw new RuntimeException(t);
+                        @Override
+                        public void onFailure(@NonNull Call<SearchResult> call, @NonNull Throwable t) {
+                            throw new RuntimeException(t);
+                        }
                     }
-                }
+            )
         );
     }
 }
