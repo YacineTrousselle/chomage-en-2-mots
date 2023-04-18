@@ -1,11 +1,15 @@
 package fr.ceri.chomageen2mots.webservice;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface PEInterface {
@@ -20,5 +24,10 @@ public interface PEInterface {
     );
 
     @GET("/partenaire/offresdemploi/v2/offres/search")
-    Call<Void> search(@Header("Authorization") String accessToken);
+    Call<SearchResult> search(
+            @Header("Authorization") String accessToken,
+            @QueryMap Map<String, String> params,
+            @Query("motsCles") String keyword,
+            @Query("range") String range
+    );
 }

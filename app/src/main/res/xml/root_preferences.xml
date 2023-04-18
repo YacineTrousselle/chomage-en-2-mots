@@ -1,0 +1,47 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="Affichage">
+
+        <DropDownPreference
+            android:entries="@array/range"
+            android:entryValues="@array/range"
+            android:key="range"
+            android:title="Nombre de résultats par page"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Paramètres de recherche">
+
+        <DropDownPreference
+            android:entries="@array/departement"
+            android:entryValues="@array/departement"
+            android:key="departement"
+            android:title="Département"
+            app:useSimpleSummaryProvider="true" />
+
+        <DropDownPreference
+            android:entries="@array/temps"
+            android:entryValues="@array/temps"
+            android:key="temps"
+            android:title="Temps"
+            app:useSimpleSummaryProvider="true" />
+
+        <DropDownPreference
+            android:entries="@array/experience"
+            android:entryValues="@array/experience"
+            android:key="experience"
+            android:title="Expérience"
+            app:useSimpleSummaryProvider="true" />
+
+        <DropDownPreference
+            android:entries="@array/niveauFormation"
+            android:entryValues="@array/niveauFormation"
+            android:key="niveauFormation"
+            android:title="Niveau de formation"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

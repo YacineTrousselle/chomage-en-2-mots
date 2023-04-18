@@ -34,4 +34,14 @@
             android:defaultValue="" />
     </fragment>
 
+    <fragment
+        android:id="@+id/ConfigurationFragment"
+        android:name="fr.ceri.chomageen2mots.ConfigurationFragment"
+        android:label="@string/configuration_fragment"
+        tools:layout="@layout/fragment_config" />
+
+    <action
+        android:id="@+id/open_configuration"
+        app:destination="@id/ConfigurationFragment"
+        />
 </navigation>
