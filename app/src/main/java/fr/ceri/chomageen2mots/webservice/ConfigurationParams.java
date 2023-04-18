@@ -1,63 +1,54 @@
 package fr.ceri.chomageen2mots.webservice;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import androidx.preference.PreferenceManager;
+
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigurationParams implements Serializable {
-    private int departement;
-    private boolean tempsPlein;
-    private String experience;
-    private String niveauFormation;
+    private static final ArrayList<String> EXPERIENCE = new ArrayList<>(Arrays.asList(
+            "Moins d'un an d'expérience",
+            "De 1 à 3 ans d'expérience",
+            "Plus de 3 ans d'expérience"
+    ));
 
-    public ConfigurationParams() {
-        this.departement = 0;
-        this.tempsPlein = true;
-        this.experience = null;
-        this.niveauFormation = null;
-    }
-
-    public int getDepartement() {
-        return departement;
-    }
-
-    public void setDepartement(int departement) {
-        this.departement = departement;
-    }
-
-    public boolean isTempsPlein() {
-        return tempsPlein;
-    }
-
-    public void setTempsPlein(boolean tempsPlein) {
-        this.tempsPlein = tempsPlein;
-    }
-
-    public String getExperience() {
-        return experience;
-    }
-
-    public void setExperience(String experience) {
-        if (!Objects.equals(experience, "1") && !Objects.equals(experience, "2") && !Objects.equals(experience, "3")) {
-            return ;
+    public static Map<String, String> getConfig(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Map<String, String> params = new HashMap<>();
+        String departement = sharedPreferences.getString("departement", "Tous les départements");
+        if (!departement.equals("Tous les départements")) {
+            String departementCode = departement.split("-")[0].trim();
+            params.put("departement", departementCode);
         }
-        this.experience = experience;
+        String temps = sharedPreferences.getString("temps", "Tout");
+        if (!temps.equals("Tout")) {
+            boolean isTempsPlein = temps.equals("Temps plein");
+            params.put("tempsPlein", String.valueOf(isTempsPlein));
+        }
+        String experience = sharedPreferences.getString("experience", "Tout");
+        if (!experience.equals("Tout")) {
+            int ind = EXPERIENCE.indexOf(experience);
+            if (ind != -1) {
+                params.put("experience", String.valueOf(ind));
+            }
+        }
+        String niveauFormation = sharedPreferences.getString("niveauFormation", "Tous les niveaux de formation");
+        if (!niveauFormation.equals("Tous les niveaux de formation")) {
+            String niveauFormationValue = niveauFormation.split("-")[0].trim();
+            params.put("niveauFormation", niveauFormationValue);
+        }
+
+        return params;
     }
 
-    public String getNiveauFormation() {
-        return niveauFormation;
-    }
-
-    public void setNiveauFormation(String niveauFormation) {
-        this.niveauFormation = niveauFormation;
-    }
-
-    @Override
-    public String toString() {
-        return "ConfigurationParams{" +
-                "departement=" + departement +
-                ", tempsPlein=" + tempsPlein +
-                ", experience='" + experience + '\'' +
-                ", niveauFormation='" + niveauFormation + '\'' +
-                '}';
+    public static int getNbOffreParPage(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return Integer.parseInt(sharedPreferences.getString("", "10"));
     }
 }

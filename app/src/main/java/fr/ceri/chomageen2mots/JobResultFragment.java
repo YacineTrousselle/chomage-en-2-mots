@@ -8,38 +8,41 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.fragment.NavHostFragment;
 
 import fr.ceri.chomageen2mots.databinding.FragmentJobResultBinding;
+import fr.ceri.chomageen2mots.webservice.PoleEmploiApi;
 
 public class JobResultFragment extends Fragment {
 
     private FragmentJobResultBinding binding;
     private String keyword;
+    private final LiveData<Integer> pagination = new MutableLiveData<>(0);
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         binding = FragmentJobResultBinding.inflate(inflater, container, false);
         keyword = JobResultFragmentArgs.fromBundle(requireArguments()).getKeyword();
 
-        Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "Keyword in Result fragment = " + keyword);
+        Log.d("jean", "Keyword in Result fragment = " + keyword);
+        PoleEmploiApi poleEmploiApi = new PoleEmploiApi();
+        poleEmploiApi.search(getContext(), keyword, pagination.getValue());
+
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.buttonSecond.setOnClickListener(
+            view1 ->
                 NavHostFragment.findNavController(JobResultFragment.this)
-                        .navigate(R.id.action_ResultFragment_to_SearchFragment);
-            }
-        });
+                    .navigate(R.id.action_ResultFragment_to_SearchFragment));
     }
 
     @Override
@@ -47,5 +50,4 @@ public class JobResultFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }
