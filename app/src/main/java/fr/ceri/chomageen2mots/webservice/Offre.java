@@ -35,18 +35,18 @@ public class Offre {
     public String secteurActivite;
     public String secteurActiviteLibelle;
     public String trancheEffectifEtab;
-    LieuTravail LieuTravailObject;
-    Entreprise EntrepriseObject;
-    List<Object> formations = new ArrayList<>();
-    List<Object> langues = new ArrayList<>();
-    List<Object> permis = new ArrayList<>();
-    List<Object> outilsBureautiques = new ArrayList<>();
-    List<Object> competences = new ArrayList<>();
-    Salaire SalaireObject;
-    Contact ContactObject;
-    Agence AgenceObject;
-    List<Object> qualitesProfessionnelles = new ArrayList<>();
-    OrigineOffre OrigineOffreObject;
+    public LieuTravail lieuTravail;
+    public Entreprise entreprise;
+    public List<Object> formations = new ArrayList<>();
+    public List<Object> langues = new ArrayList<>();
+    public List<Object> permis = new ArrayList<>();
+    public List<Object> outilsBureautiques = new ArrayList<>();
+    public List<Object> competences = new ArrayList<>();
+    public Salaire salaire;
+    public Contact contact;
+    public Agence agence;
+    public List<Object> qualitesProfessionnelles = new ArrayList<>();
+    public OrigineOffre origineOffre;
 
     public static class OrigineOffre {
         public String origine;
