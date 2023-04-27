@@ -1,4 +1,7 @@
-package fr.ceri.chomageen2mots.webservice;
+package fr.ceri.chomageen2mots.database;
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.squareup.moshi.JsonClass;
 
@@ -6,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonClass(generateAdapter = false)
+@Entity(tableName = "favorites")
 public class Offre {
+    @PrimaryKey(autoGenerate = false)
     public String id;
     public String intitule;
     public String description;
