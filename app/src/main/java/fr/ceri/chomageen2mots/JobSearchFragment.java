@@ -45,7 +45,9 @@ public class JobSearchFragment extends Fragment {
                 if (query != null && !query.isEmpty()) {
                     Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "QUERY ==> " + query);
                     JobSearchFragmentDirections.ActionSearchFragmentToResultFragment action = JobSearchFragmentDirections.actionSearchFragmentToResultFragment();
+                    Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "Frag direction setup");
                     action.setKeyword(query);
+                    Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "Arg Okay");
                     NavHostFragment.findNavController(JobSearchFragment.this)
                             .navigate(action);
                     return true;

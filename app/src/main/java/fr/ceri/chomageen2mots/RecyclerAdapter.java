@@ -1,5 +1,6 @@
 package fr.ceri.chomageen2mots;
 
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,16 +9,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import fr.ceri.chomageen2mots.webservice.PoleEmploiApi;
+import fr.ceri.chomageen2mots.webservice.SearchResult;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>
 {
     private int currPos = 0;
     private PoleEmploiApi api = new PoleEmploiApi();
-
-
+    public static LiveData<SearchResult> resultLiveData;
+    ListViewModel viewModel;
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,15 +39,37 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return new ViewHolder(v);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position)
     {
-
+        Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "ViewHolder : " + position);
+        holder.itemTitle.setText(resultLiveData.getValue().resultats.get(position).intitule);
+        holder.itemDetail.setText(resultLiveData.getValue().resultats.get(position).description);
+        try
+        {
+            URL url = new URL(resultLiveData.getValue().resultats.get(position).EntrepriseObject.logo);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            holder.itemImage.setImageBitmap(BitmapFactory.decodeStream(input));
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
+    public void setResultLiveData(LiveData<SearchResult> inResultLiveData){
+        resultLiveData =  inResultLiveData;
+    }
+
+    public void setListViewModel(ListViewModel viewModel){
+        viewModel = viewModel;
+    }
     @Override
     public int getItemCount() {
-        return currPos;
+        return resultLiveData.getValue().resultats.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

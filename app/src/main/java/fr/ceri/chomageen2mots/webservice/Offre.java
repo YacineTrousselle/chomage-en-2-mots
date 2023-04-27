@@ -36,7 +36,7 @@ public class Offre {
     public String secteurActiviteLibelle;
     public String trancheEffectifEtab;
     LieuTravail LieuTravailObject;
-    Entreprise EntrepriseObject;
+    public Entreprise EntrepriseObject;
     List<Object> formations = new ArrayList<>();
     List<Object> langues = new ArrayList<>();
     List<Object> permis = new ArrayList<>();

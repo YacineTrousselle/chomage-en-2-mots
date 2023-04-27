@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
@@ -61,7 +62,8 @@ public class PoleEmploiApi {
         }
     }
 
-    public void search(Context context, String keyword, int pagination) {
+    public LiveData<SearchResult> search(Context context, String keyword, int pagination) {
+        MutableLiveData<SearchResult> output = new MutableLiveData<>(new SearchResult());
         int nbOffre = ConfigurationParams.getNbOffreParPage(context);
         String range = (nbOffre * pagination) + "-" + (nbOffre * (pagination + 1) - 1);
         callApi(token ->
@@ -73,6 +75,7 @@ public class PoleEmploiApi {
                             if (response.code() == 200 || response.code() == 206) {
                                 assert response.body() != null;
                                 Log.d("jean", "onResponse: " + Arrays.toString(response.body().resultats.stream().map(offre -> offre.id).toArray()));
+                                output.postValue(response.body());
                             }
                         }
 
@@ -83,6 +86,7 @@ public class PoleEmploiApi {
                     }
             )
         );
+        return output;
     }
 }
 
