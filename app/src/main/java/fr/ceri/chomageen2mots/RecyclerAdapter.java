@@ -57,13 +57,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             URL url = null;
             try {
                 Log.d("LOGOOOOOOOOOOO", resultLiveData.getValue().resultats.get(position).logoEntreprise);
-                /*
+
                 url = new URL(resultLiveData.getValue().resultats.get(position).logoEntreprise);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setDoInput(true);
                 connection.connect();
                 InputStream input = connection.getInputStream();
-                holder.itemImage.setImageBitmap(BitmapFactory.decodeStream(input));*/
+                holder.itemImage.setImageBitmap(BitmapFactory.decodeStream(input));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
