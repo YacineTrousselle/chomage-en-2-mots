@@ -49,6 +49,6 @@ public class ConfigurationParams implements Serializable {
 
     public static int getNbOffreParPage(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return Integer.parseInt(sharedPreferences.getString("", "10"));
+        return Integer.parseInt(sharedPreferences.getString("range", "10"));
     }
 }
