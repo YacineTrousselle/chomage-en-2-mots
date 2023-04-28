@@ -11,15 +11,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import fr.ceri.chomageen2mots.database.Favorite;
 import fr.ceri.chomageen2mots.webservice.Offre;
 
 public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecyclerAdapter.ViewHolder> {
-    private List<Offre> favorites;
+    private List<Favorite> favorites;
 
     @NonNull
     @Override
@@ -30,8 +33,9 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Bitmap bitmap = getImgFromUrl(favorites.get(position).entreprise.logo);
-        holder.img.setImageBitmap(bitmap);
+        if (favorites.get(position).logoEntreprise != null){
+            Picasso.get().load(favorites.get(position).logoEntreprise).into(holder.img);
+        }
         holder.title.setText(favorites.get(position).intitule);
     }
 
@@ -43,20 +47,8 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
         return favorites.size();
     }
 
-    public Bitmap getImgFromUrl(String imageUrl) {
-        try
-        {
-            URL url = new URL(imageUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            return BitmapFactory.decodeStream(input);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+    public void setFavorites(List<Favorite> favorites) {
+        this.favorites = favorites;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

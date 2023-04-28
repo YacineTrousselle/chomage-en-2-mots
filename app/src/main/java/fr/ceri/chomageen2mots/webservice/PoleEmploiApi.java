@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -23,11 +23,12 @@ public class PoleEmploiApi {
     public static final String SCOPE = "api_offresdemploiv2 o2dsoffre";
     private static final String ACCESS_TOKEN_REQUEST_URL = "https://entreprise.pole-emploi.fr/connexion/oauth2/access_token?realm=partenaire";
 
-    private final PEInterface api;
-    private final MutableLiveData<AccessToken> accessToken = new MutableLiveData<>();
-    private final MutableLiveData<Long> requestedAt = new MutableLiveData<>((long) 0);
+    private static PoleEmploiApi INSTANCE = null;
 
-    public PoleEmploiApi() {
+    private final PEInterface api;
+    private static volatile AccessToken accessToken = null;
+
+    private PoleEmploiApi() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.pole-emploi.io")
                 .addConverterFactory(MoshiConverterFactory.create())
@@ -35,54 +36,58 @@ public class PoleEmploiApi {
         api = retrofit.create(PEInterface.class);
     }
 
-    public void callApi(CallbackInterface callback) {
-        Log.d("jean", "callApi: " + accessToken + " " + requestedAt);
-        if (accessToken.getValue() != null && accessToken.getValue().isValid(requestedAt.getValue())) {
-            Log.d("jean", "there is a token " + accessToken.getValue());
-            callback.onTokenReceived(accessToken.getValue().getToken());
-        } else {
-            api.getAccessToken(ACCESS_TOKEN_REQUEST_URL, GRANT_TYPE, CLIENT_ID, CLIENT_SECRET, SCOPE)
-                    .enqueue(
-                            new Callback<AccessToken>() {
-                                @Override
-                                public void onResponse(@NonNull Call<AccessToken> call, @NonNull Response<AccessToken> response) {
-                                    accessToken.postValue(response.body());
-                                    requestedAt.postValue(new Date().getTime() / 1000);
-                                    callback.onTokenReceived(response.body().getToken());
-                                    Log.d("jean", "onResponse: " + response.body());
-                                }
-
-                                @Override
-                                public void onFailure(@NonNull Call<AccessToken> call, @NonNull Throwable t) {
-                                    throw new RuntimeException(t);
-                                }
-                            }
-                    );
+    public static PoleEmploiApi getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new PoleEmploiApi();
         }
+        return INSTANCE;
     }
 
-    public void search(Context context, String keyword, int pagination) {
-        int nbOffre = ConfigurationParams.getNbOffreParPage(context);
-        String range = (nbOffre * pagination) + "-" + (nbOffre * (pagination + 1) - 1);
-        callApi(token ->
-            api.search("Bearer " + token, ConfigurationParams.getConfig(context), keyword, range).enqueue(
-                    new Callback<SearchResult>() {
+    public void callApi(CallbackInterface callback) {
+        if (accessToken != null && accessToken.isValid()) {
+            callback.onTokenReceived(accessToken.getToken());
+        } else {
+            Call<AccessToken> accessTokenCall = api.getAccessToken(ACCESS_TOKEN_REQUEST_URL, GRANT_TYPE, CLIENT_ID, CLIENT_SECRET, SCOPE);
+            accessTokenCall.enqueue(
+                    new Callback<AccessToken>() {
                         @Override
-                        public void onResponse(@NonNull Call<SearchResult> call, @NonNull Response<SearchResult> response) {
-                            Log.d("jean", String.valueOf(call.request().url()));
-                            if (response.code() == 200 || response.code() == 206) {
-                                assert response.body() != null;
-                                Log.d("jean", "onResponse: " + Arrays.toString(response.body().resultats.stream().map(offre -> offre.id).toArray()));
-                            }
+                        public void onResponse(@NonNull Call<AccessToken> call, @NonNull Response<AccessToken> response) {
+                            accessToken = response.body();
+                            callback.onTokenReceived(accessToken.getToken());
                         }
 
                         @Override
-                        public void onFailure(@NonNull Call<SearchResult> call, @NonNull Throwable t) {
+                        public void onFailure(@NonNull Call<AccessToken> call, @NonNull Throwable t) {
                             throw new RuntimeException(t);
                         }
                     }
-            )
+            );
+
+        }
+    }
+
+    public MediatorLiveData<SearchResult> search(Context context, String keyword, int pagination) {
+        int nbOffre = ConfigurationParams.getNbOffreParPage(context);
+        String range = (nbOffre * pagination) + "-" + (nbOffre * (pagination + 1) - 1);
+
+        MediatorLiveData<SearchResult> searchResult = new MediatorLiveData<>();
+        callApi(token ->
+                api.search("Bearer " + token, ConfigurationParams.getConfig(context), keyword, range).enqueue(
+                        new Callback<Resultats>() {
+                            @Override
+                            public void onResponse(@NonNull Call<Resultats> call, @NonNull Response<Resultats> response) {
+                                if (response.code() == 200 || response.code() == 206) {
+                                    searchResult.postValue(new SearchResult(response.body(), false, response.code()));
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<Resultats> call, @NonNull Throwable t) {
+                                throw new RuntimeException(t);
+                            }
+                        }
+                )
         );
+        return searchResult;
     }
 }
-
