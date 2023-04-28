@@ -40,6 +40,12 @@
         android:label="@string/configuration_fragment"
         tools:layout="@layout/fragment_config" />
 
+    <fragment
+        android:id="@+id/FavoriteFragment"
+        android:name="fr.ceri.chomageen2mots.FavoriteFragment"
+        android:label="@string/favoris"
+        tools:layout="@layout/fragment_favorite" />
+
     <action
         android:id="@+id/open_configuration"
         app:destination="@id/ConfigurationFragment"

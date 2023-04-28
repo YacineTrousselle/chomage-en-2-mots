@@ -21,6 +21,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import fr.ceri.chomageen2mots.databinding.ActivityMainBinding;
+import fr.ceri.chomageen2mots.webservice.PoleEmploiApi;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PoleEmploiApi.getInstance().callApi(token -> Log.d("jean", "token: " + token));
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -63,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        if (id == R.id.action_favorites) {
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.FavoriteFragment);
+            return true;
+        }
         if (id == R.id.action_settings) {
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
             navController.navigate(R.id.ConfigurationFragment);

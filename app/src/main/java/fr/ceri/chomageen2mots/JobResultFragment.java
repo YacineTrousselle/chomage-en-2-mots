@@ -17,9 +17,9 @@ import fr.ceri.chomageen2mots.webservice.PoleEmploiApi;
 
 public class JobResultFragment extends Fragment {
 
+    private final LiveData<Integer> pagination = new MutableLiveData<>(0);
     private FragmentJobResultBinding binding;
     private String keyword;
-    private final LiveData<Integer> pagination = new MutableLiveData<>(0);
 
     @Override
     public View onCreateView(
@@ -30,7 +30,7 @@ public class JobResultFragment extends Fragment {
         keyword = JobResultFragmentArgs.fromBundle(requireArguments()).getKeyword();
 
         Log.d("jean", "Keyword in Result fragment = " + keyword);
-        PoleEmploiApi poleEmploiApi = new PoleEmploiApi();
+        PoleEmploiApi poleEmploiApi = PoleEmploiApi.getInstance();
         poleEmploiApi.search(getContext(), keyword, pagination.getValue());
 
         return binding.getRoot();
@@ -40,9 +40,9 @@ public class JobResultFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.buttonSecond.setOnClickListener(
-            view1 ->
-                NavHostFragment.findNavController(JobResultFragment.this)
-                    .navigate(R.id.action_ResultFragment_to_SearchFragment));
+                view1 ->
+                        NavHostFragment.findNavController(JobResultFragment.this)
+                                .navigate(R.id.action_ResultFragment_to_SearchFragment));
     }
 
     @Override
