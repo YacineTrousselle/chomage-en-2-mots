@@ -54,7 +54,7 @@ public class JobResultFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.job_list);
-        adapter = new RecyclerAdapter();
+        adapter = new RecyclerAdapter(getContext());
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         PoleEmploiApi poleEmploiApi = new PoleEmploiApi();

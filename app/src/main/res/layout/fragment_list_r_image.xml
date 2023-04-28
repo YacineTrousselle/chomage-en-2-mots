@@ -5,31 +5,36 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".List_Fragment_R_Image">
+    android:layout_margin="8dp"
+    android:radius="6dp"
+    tools:context=".List_Fragment_L_Image">
 
     <!-- TODO: Update blank fragment layout -->
 
     <ImageView
         android:id="@+id/compagny_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginBottom="13dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.005"
         tools:src="@tools:sample/avatars[3]" />
 
     <TextView
         android:id="@+id/job_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:breakStrategy="high_quality"
+        android:fontFamily="sans-serif-medium"
         android:maxLines="2"
         android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#303030"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/compagny_img"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,8 +43,8 @@
         android:id="@+id/job_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
         android:maxLines="10"
         android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/compagny_img"

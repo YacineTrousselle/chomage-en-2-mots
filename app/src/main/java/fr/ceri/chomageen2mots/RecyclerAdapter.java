@@ -1,5 +1,6 @@
 package fr.ceri.chomageen2mots;
 
+import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import fr.ceri.chomageen2mots.webservice.PoleEmploiApi;
@@ -25,6 +27,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private PoleEmploiApi api = new PoleEmploiApi();
     public static LiveData<SearchResult> resultLiveData;
     ListViewModel viewModel;
+    private Context context;
+    public RecyclerAdapter(Context mContext){
+        context = mContext;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -46,17 +53,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "ViewHolder : " + position);
         holder.itemTitle.setText(resultLiveData.getValue().resultats.get(position).intitule);
         holder.itemDetail.setText(resultLiveData.getValue().resultats.get(position).description);
-        try
-        {
-            URL url = new URL(resultLiveData.getValue().resultats.get(position).EntrepriseObject.logo);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            holder.itemImage.setImageBitmap(BitmapFactory.decodeStream(input));
-        } catch (Exception e)
-        {
-            e.printStackTrace();
+        if(resultLiveData.getValue().resultats.get(position).logoEntreprise != null) {
+            URL url = null;
+            try {
+                Log.d("LOGOOOOOOOOOOO", resultLiveData.getValue().resultats.get(position).logoEntreprise);
+                /*
+                url = new URL(resultLiveData.getValue().resultats.get(position).logoEntreprise);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                holder.itemImage.setImageBitmap(BitmapFactory.decodeStream(input));*/
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            Log.d("LOGOOOOOOOOOOO", "No logo for " + position);
+            holder.itemImage.setImageDrawable(holder.itemImage.getResources().getDrawable(R.drawable.c));
+            //holder.itemImage.setImageDrawable(context.getResources().getDrawable(R.drawable.c));
         }
     }
 
