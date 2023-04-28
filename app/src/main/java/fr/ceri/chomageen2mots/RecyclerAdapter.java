@@ -1,6 +1,5 @@
 package fr.ceri.chomageen2mots;
 
-import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,28 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import fr.ceri.chomageen2mots.webservice.PoleEmploiApi;
 import fr.ceri.chomageen2mots.webservice.SearchResult;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>
-{
-    private int currPos = 0;
-    private PoleEmploiApi api = new PoleEmploiApi();
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     public static LiveData<SearchResult> resultLiveData;
-    ListViewModel viewModel;
-    private Context context;
-    public RecyclerAdapter(Context mContext){
-        context = mContext;
-    }
+    private int currPos = 0;
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         currPos++;
-        if(currPos % 2 != 0) {
+        if (currPos % 2 != 0) {
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.fragment_list_r_image, parent, false);
             return new ViewHolder(v);
@@ -48,17 +38,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "ViewHolder : " + position);
-        holder.itemTitle.setText(resultLiveData.getValue().resultats.get(position).intitule);
-        holder.itemDetail.setText(resultLiveData.getValue().resultats.get(position).description);
-        if(resultLiveData.getValue().resultats.get(position).logoEntreprise != null) {
+        holder.itemTitle.setText(resultLiveData.getValue().getOffres().get(position).intitule);
+        holder.itemDetail.setText(resultLiveData.getValue().getOffres().get(position).description);
+        if (resultLiveData.getValue().getOffres().get(position).logoEntreprise != null) {
             URL url = null;
             try {
-                Log.d("LOGOOOOOOOOOOO", resultLiveData.getValue().resultats.get(position).logoEntreprise);
+                Log.d("LOGOOOOOOOOOOO", resultLiveData.getValue().getOffres().get(position).logoEntreprise);
 
-                url = new URL(resultLiveData.getValue().resultats.get(position).logoEntreprise);
+                url = new URL(resultLiveData.getValue().getOffres().get(position).logoEntreprise);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setDoInput(true);
                 connection.connect();
@@ -74,16 +63,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
     }
 
-    public void setResultLiveData(LiveData<SearchResult> inResultLiveData){
-        resultLiveData =  inResultLiveData;
-    }
-
-    public void setListViewModel(ListViewModel viewModel){
-        viewModel = viewModel;
-    }
     @Override
     public int getItemCount() {
-        return resultLiveData.getValue().resultats.size();
+        if (resultLiveData == null || resultLiveData.getValue() == null) {
+            return 0;
+        }
+        return resultLiveData.getValue().getOffres().size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -101,7 +86,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             int position = getAdapterPosition();
 
             itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
 
                     int position = getAdapterPosition();
                     Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "Details for ViewHolder : " + position);

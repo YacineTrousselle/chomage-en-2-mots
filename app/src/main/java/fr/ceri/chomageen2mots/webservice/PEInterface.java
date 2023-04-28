@@ -24,7 +24,7 @@ public interface PEInterface {
     );
 
     @GET("/partenaire/offresdemploi/v2/offres/search")
-    Call<SearchResult> search(
+    Call<Resultats> search(
             @Header("Authorization") String accessToken,
             @QueryMap Map<String, String> params,
             @Query("motsCles") String keyword,

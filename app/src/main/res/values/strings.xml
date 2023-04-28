@@ -10,5 +10,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="configuration_fragment">Configuration</string>
+    <string name="favoris">Favoris</string>
+    <string name="entreprise_img">image de l\'entreprise</string>
 
 </resources>

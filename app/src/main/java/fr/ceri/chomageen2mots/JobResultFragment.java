@@ -10,32 +10,27 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import fr.ceri.chomageen2mots.databinding.FragmentJobResultBinding;
 import fr.ceri.chomageen2mots.webservice.PoleEmploiApi;
-import fr.ceri.chomageen2mots.webservice.SearchResult;
 
 public class JobResultFragment extends Fragment {
 
+    private final LiveData<Integer> pagination = new MutableLiveData<>(0);
     private FragmentJobResultBinding binding;
     private String keyword;
-    private final LiveData<Integer> pagination = new MutableLiveData<>(0);
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerAdapter adapter;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         binding = FragmentJobResultBinding.inflate(inflater, container, false);
         keyword = JobResultFragmentArgs.fromBundle(requireArguments()).getKeyword();
 
@@ -47,17 +42,16 @@ public class JobResultFragment extends Fragment {
         Log.d("jean", "Keyword in Result fragment = " + keyword);
 
 
-
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.job_list);
-        adapter = new RecyclerAdapter(getContext());
+        adapter = new RecyclerAdapter();
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        PoleEmploiApi poleEmploiApi = new PoleEmploiApi();
+        PoleEmploiApi poleEmploiApi = PoleEmploiApi.getInstance();
         recyclerView.setAdapter(adapter);
 
 
@@ -65,18 +59,16 @@ public class JobResultFragment extends Fragment {
 
         adapter.resultLiveData.observe(getViewLifecycleOwner(),
                 update -> {
-                    Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "UPDATE LICEDATA" );
-                    adapter.notifyItemRangeInserted(0, adapter.resultLiveData.getValue().resultats.size());
+                    Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "UPDATE LICEDATA");
+                    adapter.notifyItemRangeInserted(0, adapter.resultLiveData.getValue().getOffres().size());
                 }
-            );
-
-
+        );
 
 
         binding.buttonSecond.setOnClickListener(
-            view1 ->
-                NavHostFragment.findNavController(JobResultFragment.this)
-                    .navigate(R.id.action_ResultFragment_to_SearchFragment));
+                view1 ->
+                        NavHostFragment.findNavController(JobResultFragment.this)
+                                .navigate(R.id.action_ResultFragment_to_SearchFragment));
     }
 
     @Override
