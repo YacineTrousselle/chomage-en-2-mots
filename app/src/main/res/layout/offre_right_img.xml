@@ -6,10 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:radius="6dp"
-    tools:context=".List_Fragment_L_Image">
-
-    <!-- TODO: Update blank fragment layout -->
+    android:radius="6dp">
 
     <ImageView
         android:id="@+id/compagny_img"

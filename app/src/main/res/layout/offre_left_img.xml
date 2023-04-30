@@ -7,10 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:radius="6dp"
-    tools:context=".List_Fragment_L_Image"
     android:elevation="4dp">
-
-    <!-- TODO: Update blank fragment layout -->
 
     <ImageView
         android:id="@+id/compagny_img"
@@ -24,7 +21,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars[3]" />
+        tools:src="@tools:sample/avatars[3]"
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/job_title"

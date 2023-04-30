@@ -17,8 +17,8 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             />
-
     </fragment>
+
     <fragment
         android:id="@+id/JobResultFragment"
         android:name="fr.ceri.chomageen2mots.JobResultFragment"
@@ -45,9 +45,4 @@
         android:name="fr.ceri.chomageen2mots.FavoriteFragment"
         android:label="@string/favoris"
         tools:layout="@layout/fragment_favorite" />
-
-    <action
-        android:id="@+id/open_configuration"
-        app:destination="@id/ConfigurationFragment"
-        />
 </navigation>

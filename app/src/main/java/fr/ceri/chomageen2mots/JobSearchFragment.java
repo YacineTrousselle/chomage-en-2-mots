@@ -9,19 +9,12 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.ListFragment;
-import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
-import java.util.Objects;
-
-import fr.ceri.chomageen2mots.JobSearchFragmentDirections;
 import fr.ceri.chomageen2mots.databinding.FragmentSearchBinding;
 
 public class JobSearchFragment extends Fragment {
-
     private FragmentSearchBinding binding;
-
     private SearchView searchView;
 
     @Override
@@ -29,7 +22,6 @@ public class JobSearchFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         searchView = binding.sheachBar;
         return binding.getRoot();
@@ -48,13 +40,10 @@ public class JobSearchFragment extends Fragment {
                     Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "Frag direction setup");
                     action.setKeyword(query);
                     Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "Arg Okay");
-                    NavHostFragment.findNavController(JobSearchFragment.this)
-                            .navigate(action);
+                    NavHostFragment.findNavController(JobSearchFragment.this).navigate(action);
                     return true;
-                } else {
-                    Log.e("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "query is null or empty");
-                    return false;
                 }
+                return false;
             }
 
             @Override

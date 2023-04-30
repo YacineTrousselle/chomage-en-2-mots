@@ -1,92 +1,87 @@
 package fr.ceri.chomageen2mots;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import fr.ceri.chomageen2mots.databinding.FragmentJobResultBinding;
 import fr.ceri.chomageen2mots.webservice.PoleEmploiApi;
+import fr.ceri.chomageen2mots.webservice.SearchResult;
 
 public class JobResultFragment extends Fragment {
-
-    private final LiveData<Integer> pagination = new MutableLiveData<>(0);
+    private final PoleEmploiApi poleEmploiApi = PoleEmploiApi.getInstance();
     private FragmentJobResultBinding binding;
     private String keyword;
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
     private RecyclerAdapter adapter;
+    private int pagination = 0;
+    private MutableLiveData<SearchResult> searchResult = new MutableLiveData<>();
+    private ProgressBar progress;
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
+            @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
         binding = FragmentJobResultBinding.inflate(inflater, container, false);
         keyword = JobResultFragmentArgs.fromBundle(requireArguments()).getKeyword();
-
-/*
-        viewModel = new ViewModelProvider(this).get(ListViewModel.class);
-        setListener();
-*/
-
-        Log.d("jean", "Keyword in Result fragment = " + keyword);
-
 
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.job_list);
+
+        RecyclerView recyclerView = view.findViewById(R.id.job_list);
+        progress = view.findViewById(R.id.progress);
         adapter = new RecyclerAdapter();
-        layoutManager = new LinearLayoutManager(getActivity());
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        PoleEmploiApi poleEmploiApi = PoleEmploiApi.getInstance();
         recyclerView.setAdapter(adapter);
 
+        loadData();
+        binding.buttonPrevious.setOnClickListener(v -> {
+            if (pagination > 0) {
+                pagination--;
+                loadData();
+            }
+        });
+        binding.buttonNext.setOnClickListener(v -> {
+            if (searchResult.getValue().getCode() == 206) {
+                pagination++;
+                loadData();
+            }
+        });
+    }
 
-        adapter.resultLiveData = poleEmploiApi.search(getContext(), keyword, pagination.getValue());
+    private void loadData() {
+        searchResult = poleEmploiApi.search(getContext(), keyword, pagination);
 
-        adapter.resultLiveData.observe(getViewLifecycleOwner(),
-                update -> {
-                    Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "UPDATE LICEDATA");
-                    adapter.notifyItemRangeInserted(0, adapter.resultLiveData.getValue().getOffres().size());
+        searchResult.observe(getViewLifecycleOwner(),
+                searchResultValue -> {
+                    if (searchResultValue.isLoading()) {
+                        progress.setVisibility(View.VISIBLE);
+                    } else {
+                        progress.setVisibility(View.GONE);
+                        adapter.setSearchResult(searchResultValue);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
         );
-
-
-        binding.buttonSecond.setOnClickListener(
-                view1 ->
-                        NavHostFragment.findNavController(JobResultFragment.this)
-                                .navigate(R.id.action_ResultFragment_to_SearchFragment));
     }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
-
-/*
-    public void setListener(){
-        recyclerView = getView().findViewById(R.id.job_list);
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerAdapter();
-        recyclerView.setAdapter(adapter);
-        adapter.setListViewModel(viewModel);
-
-    }
-
-*/
 }
