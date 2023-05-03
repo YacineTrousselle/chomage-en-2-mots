@@ -7,37 +7,16 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import fr.ceri.chomageen2mots.webservice.Offre;
-
 @Database(entities = {Favorite.class}, version = 1, exportSchema = false)
 public abstract class FavoriteDatabase extends RoomDatabase {
-    public abstract FavoriteDao favoriteDao();
-
-    private static volatile FavoriteDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
-
-    static FavoriteDatabase getDatabase(final Context context) {
-        if (INSTANCE == null) {
-            synchronized (FavoriteDatabase.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room
-                            .databaseBuilder(context.getApplicationContext(), FavoriteDatabase.class, "offre_database")
-                            .addCallback(sRoomDatabaseCallback)
-                            .build();
-                }
-            }
-        }
-
-        return INSTANCE;
-    }
-
+    private static volatile FavoriteDatabase INSTANCE;
     private static final RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
@@ -54,9 +33,26 @@ public abstract class FavoriteDatabase extends RoomDatabase {
                 };
                 for (Favorite favorite : favoris) {
                     dao.insert(favorite);
-                    Log.d("jean", "favori: " + favorite) ;
+                    Log.d("jean", "favori: " + favorite);
                 }
             });
         }
     };
+
+    static FavoriteDatabase getDatabase(final Context context) {
+        if (INSTANCE == null) {
+            synchronized (FavoriteDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = Room
+                            .databaseBuilder(context.getApplicationContext(), FavoriteDatabase.class, "offre_database")
+                            .addCallback(sRoomDatabaseCallback)
+                            .build();
+                }
+            }
+        }
+
+        return INSTANCE;
+    }
+
+    public abstract FavoriteDao favoriteDao();
 }
