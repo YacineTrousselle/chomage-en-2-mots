@@ -11,10 +11,17 @@ public class Offre {
     public String intitule;
     @Json(name = "description")
     public String description;
+    @Json(name = "typeContrat")
+    public String typeContrat;
     @Json(name = "entreprise.logo")
     public String logoEntreprise;
     @Json(name = "entreprise.nom")
     public String nomEntreprise;
+    @Json(name = "dureeTravailLibelle")
+    public String dureeTravailLibelle;
+
+    @Json(name = "lieuTravail.commune")
+    public String commune;
 
     @NonNull
     @Override

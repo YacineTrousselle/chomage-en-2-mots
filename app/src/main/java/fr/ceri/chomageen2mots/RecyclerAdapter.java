@@ -32,9 +32,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String infoStr = searchResult.getOffres().get(position).nomEntreprise + ", " + searchResult.getOffres().get(position).commune +"\n" + searchResult.getOffres().get(position).typeContrat + " " + searchResult.getOffres().get(position).dureeTravailLibelle;
         holder.id = searchResult.getOffres().get(position).id;
         holder.itemTitle.setText(searchResult.getOffres().get(position).intitule);
-        holder.itemDetail.setText(searchResult.getOffres().get(position).description);
+        holder.itemDetail.setText(infoStr);
         String imgUrl = searchResult.getOffres().get(position).logoEntreprise;
         if (imgUrl != null) {
             Picasso.get().load(imgUrl).into(holder.itemImage);
