@@ -6,6 +6,7 @@ public class Offre {
     public String description;
     public Entreprise entreprise;
 
+
     @Override
     public String toString() {
         return "Offre{" +
