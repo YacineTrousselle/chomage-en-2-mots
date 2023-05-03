@@ -32,7 +32,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String infoStr = searchResult.getOffres().get(position).nomEntreprise + ", " + searchResult.getOffres().get(position).commune +"\n" + searchResult.getOffres().get(position).typeContrat + " " + searchResult.getOffres().get(position).dureeTravailLibelle;
+        String infoStr = searchResult.getOffres().get(position).entreprise.nom + "\n" + searchResult.getOffres().get(position).typeContrat + " " + searchResult.getOffres().get(position).dureeTravailLibelle;
         holder.id = searchResult.getOffres().get(position).id;
         holder.itemTitle.setText(searchResult.getOffres().get(position).intitule);
         holder.itemDetail.setText(infoStr);
