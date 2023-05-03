@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 
 import fr.ceri.chomageen2mots.webservice.Offre;
 
-@Database(entities = {Favorite.class}, version = 1)
+@Database(entities = {Favorite.class}, version = 1, exportSchema = false)
 public abstract class FavoriteDatabase extends RoomDatabase {
     public abstract FavoriteDao favoriteDao();
 
@@ -51,14 +51,6 @@ public abstract class FavoriteDatabase extends RoomDatabase {
                         new Favorite("jean1", "41", "jean", "https://www.adobe.com/fr/express/create/media_127a4cd0c28c2753638768caf8967503d38d01e4c.jpeg?width=400&format=jpeg&optimize=medium", "jean"),
                         new Favorite("jeangrg", "jean", "jean", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/2048px-LEGO_logo.svg.png", "jean"),
                         new Favorite("jezrgan1", "41", "jean", "https://www.adobe.com/fr/express/create/media_127a4cd0c28c2753638768caf8967503d38d01e4c.jpeg?width=400&format=jpeg&optimize=medium", "jean"),
-                        new Favorite("ggzrgjean", "jean", "jean", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/2048px-LEGO_logo.svg.png", "jean"),
-                        new Favorite("jegrzgan1", "41", "jean", "https://www.adobe.com/fr/express/create/media_127a4cd0c28c2753638768caf8967503d38d01e4c.jpeg?width=400&format=jpeg&optimize=medium", "jean"),
-                        new Favorite("jejuyjzrgrzan", "jean", "jean", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/2048px-LEGO_logo.svg.png", "jean"),
-                        new Favorite("jehyan1", "41", "jean", "https://www.adobe.com/fr/express/create/media_127a4cd0c28c2753638768caf8967503d38d01e4c.jpeg?width=400&format=jpeg&optimize=medium", "jean"),
-                        new Favorite("jezrgzran", "jean", "jean", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/2048px-LEGO_logo.svg.png", "jean"),
-                        new Favorite("jetvan1", "41", "jean", "https://www.adobe.com/fr/express/create/media_127a4cd0c28c2753638768caf8967503d38d01e4c.jpeg?width=400&format=jpeg&optimize=medium", "jean"),
-                        new Favorite("jeagzrgn", "jean", "jean", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/2048px-LEGO_logo.svg.png", "jean"),
-                        new Favorite("jeaeuyzn2", "moilr", "jean", "https://cdn.pixabay.com/photo/2017/03/16/21/18/logo-2150297_640.png", "jean"),
                 };
                 for (Favorite favorite : favoris) {
                     dao.insert(favorite);

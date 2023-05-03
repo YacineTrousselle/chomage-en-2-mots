@@ -1,7 +1,5 @@
 package fr.ceri.chomageen2mots;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 import fr.ceri.chomageen2mots.database.Favorite;
-import fr.ceri.chomageen2mots.webservice.Offre;
 
 public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecyclerAdapter.ViewHolder> {
     private List<Favorite> favorites;
@@ -33,8 +27,10 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (favorites.get(position).logoEntreprise != null){
+        if (favorites.get(position).logoEntreprise != null) {
             Picasso.get().load(favorites.get(position).logoEntreprise).into(holder.img);
+        } else {
+            Picasso.get().load(R.drawable.c).into(holder.img);
         }
         holder.title.setText(favorites.get(position).intitule);
     }
@@ -54,6 +50,7 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img;
         TextView title;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.compagny_img);

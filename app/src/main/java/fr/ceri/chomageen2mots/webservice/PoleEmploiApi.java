@@ -4,11 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import java.util.Arrays;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,9 +20,8 @@ public class PoleEmploiApi {
     private static final String ACCESS_TOKEN_REQUEST_URL = "https://entreprise.pole-emploi.fr/connexion/oauth2/access_token?realm=partenaire";
 
     private static PoleEmploiApi INSTANCE = null;
-
-    private final PEInterface api;
     private static volatile AccessToken accessToken = null;
+    private final PEInterface api;
 
     private PoleEmploiApi() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -66,11 +61,11 @@ public class PoleEmploiApi {
         }
     }
 
-    public MediatorLiveData<SearchResult> search(Context context, String keyword, int pagination) {
+    public MutableLiveData<SearchResult> search(Context context, String keyword, int pagination) {
         int nbOffre = ConfigurationParams.getNbOffreParPage(context);
         String range = (nbOffre * pagination) + "-" + (nbOffre * (pagination + 1) - 1);
 
-        MediatorLiveData<SearchResult> searchResult = new MediatorLiveData<>();
+        MutableLiveData<SearchResult> searchResult = new MutableLiveData<>(new SearchResult(null, false, 0));
         callApi(token ->
                 api.search("Bearer " + token, ConfigurationParams.getConfig(context), keyword, range).enqueue(
                         new Callback<Resultats>() {
