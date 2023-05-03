@@ -35,7 +35,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.id = searchResult.getOffres().get(position).id;
         holder.itemTitle.setText(searchResult.getOffres().get(position).intitule);
         holder.itemDetail.setText(searchResult.getOffres().get(position).description);
-        String imgUrl = searchResult.getOffres().get(position).logoEntreprise;
+        String imgUrl = searchResult.getOffres().get(position).entreprise.logo;
         if (imgUrl != null) {
             Picasso.get().load(imgUrl).into(holder.itemImage);
         } else {

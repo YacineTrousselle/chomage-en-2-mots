@@ -28,7 +28,7 @@ public class Favorite {
         this.id = offre.id;
         this.intitule = offre.intitule;
         this.description = offre.description;
-        this.logoEntreprise = offre.logoEntreprise;
-        this.nomEntreprise = offre.nomEntreprise;
+        this.logoEntreprise = offre.entreprise.logo;
+        this.nomEntreprise = offre.entreprise.nom;
     }
 }
