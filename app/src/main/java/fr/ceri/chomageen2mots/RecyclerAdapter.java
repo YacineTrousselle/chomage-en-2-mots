@@ -53,10 +53,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return searchResult.getOffres().size();
     }
 
-    public SearchResult getSearchResult() {
-        return searchResult;
-    }
-
     public void setSearchResult(SearchResult searchResult) {
         this.searchResult = searchResult;
     }
@@ -76,8 +72,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemView.setOnClickListener(v -> {
                 Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "Details for ViewHolder : " + getAdapterPosition());
             });
-
         }
     }
-
 }
