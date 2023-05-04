@@ -12,5 +12,6 @@
     <string name="configuration_fragment">Configuration</string>
     <string name="favoris">Favoris</string>
     <string name="entreprise_img">image de l\'entreprise</string>
+    <string name="details">Detail</string>
 
 </resources>

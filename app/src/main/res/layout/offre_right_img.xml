@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:radius="6dp">
+    android:radius="6dp"
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/compagny_img"
