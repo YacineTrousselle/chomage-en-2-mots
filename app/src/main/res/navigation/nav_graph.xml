@@ -26,8 +26,10 @@
         tools:layout="@layout/fragment_job_result">
 
         <action
-            android:id="@+id/action_ResultFragment_to_SearchFragment"
-            app:destination="@id/JobSearchFragment" />
+            android:id="@+id/action_ResultFragment_to_DetailsFragment"
+            app:destination="@id/DetailFragment" />
+
+
         <argument
             android:name="keyword"
             app:argType="string"
@@ -45,4 +47,29 @@
         android:name="fr.ceri.chomageen2mots.FavoriteFragment"
         android:label="@string/favoris"
         tools:layout="@layout/fragment_favorite" />
+
+    <fragment
+        android:id="@+id/DetailFragment"
+        android:name="fr.ceri.chomageen2mots.DetailFragment"
+        android:label="@string/details"
+        tools:layout="@layout/details_fragment"
+        >
+        <argument
+            android:name="description"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="titre"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="jobInfo"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="imgUrl"
+            app:argType="string"
+            android:defaultValue=""/>
+    </fragment>
+
 </navigation>
