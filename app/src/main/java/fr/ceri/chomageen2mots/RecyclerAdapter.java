@@ -1,18 +1,23 @@
 package fr.ceri.chomageen2mots;
 
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.ListFragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
 import fr.ceri.chomageen2mots.webservice.SearchResult;
+
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private SearchResult searchResult;
@@ -32,12 +37,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String infoStr = searchResult.getOffres().get(position).entreprise.nom + "\n" + searchResult.getOffres().get(position).typeContrat + " " + searchResult.getOffres().get(position).dureeTravailLibelle;
+        String infoStr = "";
+        if(searchResult.getOffres().get(position).entreprise.nom != null) {
+            infoStr = searchResult.getOffres().get(position).entreprise.nom;
+        }
+        if(searchResult.getOffres().get(position).entreprise.nom != null) {
+            infoStr += "\n" + searchResult.getOffres().get(position).typeContrat + " ";
+        }
+        if( searchResult.getOffres().get(position).dureeTravailLibelle != null) {
+            infoStr +=  searchResult.getOffres().get(position).dureeTravailLibelle;
+        }
+        holder.jobInfo = infoStr;
+        holder.jobDescription = searchResult.getOffres().get(position).description;
+        holder.jobTitle = searchResult.getOffres().get(position).intitule;
         holder.id = searchResult.getOffres().get(position).id;
         holder.itemTitle.setText(searchResult.getOffres().get(position).intitule);
         holder.itemDetail.setText(infoStr);
         String imgUrl = searchResult.getOffres().get(position).entreprise.logo;
-
+        holder.imgUrl = imgUrl;
         if (imgUrl != null) {
             Picasso.get().load(imgUrl).into(holder.itemImage);
         } else {
@@ -61,8 +78,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         this.searchResult = searchResult;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        String id;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        String id, jobInfo, jobDescription, jobTitle, imgUrl;
         ImageView itemImage;
         TextView itemTitle;
         TextView itemDetail;
@@ -75,6 +92,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
             itemView.setOnClickListener(v -> {
                 Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "Details for ViewHolder : " + getAdapterPosition());
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+
+                    int position = getAdapterPosition();
+                    JobResultFragmentDirections.ActionResultFragmentToDetailsFragment action = JobResultFragmentDirections.actionResultFragmentToDetailsFragment();
+                  //  action.setImgUrl();
+                    action.setTitre(jobTitle);
+                    action.setDescription(jobDescription);
+                    if (imgUrl != null) {
+                        action.setImgUrl(imgUrl);
+                    } else {
+                        action.setImgUrl("");
+                    }
+
+                    action.setJobInfo(jobInfo);
+                    Navigation.findNavController(v).navigate(action);
+                }
             });
 
         }
