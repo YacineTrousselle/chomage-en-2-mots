@@ -7,7 +7,6 @@ public class Offre {
     public Entreprise entreprise;
     public String typeContrat;
     public String dureeTravailLibelle;
-
     @Override
     public String toString() {
         return "Offre{" +
