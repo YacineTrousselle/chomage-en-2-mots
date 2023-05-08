@@ -15,13 +15,25 @@ public class Favorite {
     public String description;
     public String logoEntreprise;
     public String nomEntreprise;
+    public String typeContrat;
+    public String dureeTravailLibelle;
 
-    public Favorite(@NonNull String id, String intitule, String description, String logoEntreprise, String nomEntreprise) {
+    public Favorite(
+            @NonNull String id,
+            String intitule,
+            String description,
+            String logoEntreprise,
+            String nomEntreprise,
+            String typeContrat,
+            String dureeTravailLibelle
+    ) {
         this.id = id;
         this.intitule = intitule;
         this.description = description;
         this.logoEntreprise = logoEntreprise;
         this.nomEntreprise = nomEntreprise;
+        this.typeContrat = typeContrat;
+        this.dureeTravailLibelle = dureeTravailLibelle;
     }
 
     public Favorite(Offre offre) {
@@ -30,5 +42,7 @@ public class Favorite {
         this.description = offre.description;
         this.logoEntreprise = offre.entreprise.logo;
         this.nomEntreprise = offre.entreprise.nom;
+        this.typeContrat = offre.typeContrat;
+        this.dureeTravailLibelle = offre.dureeTravailLibelle;
     }
 }

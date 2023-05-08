@@ -1,21 +1,26 @@
 package fr.ceri.chomageen2mots;
 
+import android.app.Application;
 import android.util.Log;
-import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.ListFragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import fr.ceri.chomageen2mots.database.Favorite;
+import fr.ceri.chomageen2mots.database.FavoriteRepository;
+import fr.ceri.chomageen2mots.webservice.Offre;
 import fr.ceri.chomageen2mots.webservice.SearchResult;
 
 
@@ -38,23 +43,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String infoStr = "";
-        if(searchResult.getOffres().get(position).entreprise.nom != null) {
+        if (searchResult.getOffres().get(position).entreprise.nom != null) {
             infoStr = searchResult.getOffres().get(position).entreprise.nom;
         }
-        if(searchResult.getOffres().get(position).entreprise.nom != null) {
+        if (searchResult.getOffres().get(position).entreprise.nom != null) {
             infoStr += "\n" + searchResult.getOffres().get(position).typeContrat + " ";
         }
-        if( searchResult.getOffres().get(position).dureeTravailLibelle != null) {
-            infoStr +=  searchResult.getOffres().get(position).dureeTravailLibelle;
+        if (searchResult.getOffres().get(position).dureeTravailLibelle != null) {
+            infoStr += searchResult.getOffres().get(position).dureeTravailLibelle;
         }
+        holder.offre = searchResult.getOffres().get(position);
         holder.jobInfo = infoStr;
-        holder.jobDescription = searchResult.getOffres().get(position).description;
-        holder.jobTitle = searchResult.getOffres().get(position).intitule;
-        holder.id = searchResult.getOffres().get(position).id;
         holder.itemTitle.setText(searchResult.getOffres().get(position).intitule);
         holder.itemDetail.setText(infoStr);
         String imgUrl = searchResult.getOffres().get(position).entreprise.logo;
-        holder.imgUrl = imgUrl;
         if (imgUrl != null) {
             Picasso.get().load(imgUrl).into(holder.itemImage);
         } else {
@@ -74,8 +76,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         this.searchResult = searchResult;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        String id, jobInfo, jobDescription, jobTitle, imgUrl;
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+        Offre offre;
+        String jobInfo;
         ImageView itemImage;
         TextView itemTitle;
         TextView itemDetail;
@@ -89,25 +92,40 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemView.setOnClickListener(v -> {
                 Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", "Details for ViewHolder : " + getAdapterPosition());
             });
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-
-                    int position = getAdapterPosition();
-                    JobResultFragmentDirections.ActionResultFragmentToDetailsFragment action = JobResultFragmentDirections.actionResultFragmentToDetailsFragment();
-                  //  action.setImgUrl();
-                    action.setTitre(jobTitle);
-                    action.setDescription(jobDescription);
-                    if (imgUrl != null) {
-                        action.setImgUrl(imgUrl);
-                    } else {
-                        action.setImgUrl("");
-                    }
-
-                    action.setJobInfo(jobInfo);
-                    Navigation.findNavController(v).navigate(action);
+            itemView.setOnClickListener(v -> {
+                JobResultFragmentDirections.ActionResultFragmentToDetailsFragment action = JobResultFragmentDirections.actionResultFragmentToDetailsFragment();
+                //  action.setImgUrl();
+                action.setTitre(offre.intitule);
+                action.setDescription(offre.description);
+                if (offre.entreprise.logo != null) {
+                    action.setImgUrl(offre.entreprise.logo);
+                } else {
+                    action.setImgUrl("");
                 }
-            });
 
+                action.setJobInfo(jobInfo);
+                Navigation.findNavController(v).navigate(action);
+            });
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            FavoriteRepository favoriteRepository = new FavoriteRepository(new Application());
+            Favorite favorite = favoriteRepository.getFavorite(offre.id);
+            if (favorite == null) {
+                contextMenu.add(0, 0, 0, "Ajouter aux favoris");
+                contextMenu.findItem(0).setOnMenuItemClickListener(item -> {
+                    favoriteRepository.insertFavorite(new Favorite(offre));
+                    return true;
+                });
+            } else {
+                contextMenu.add(0, 0, 0, "Supprimer des favoris");
+                contextMenu.findItem(0).setOnMenuItemClickListener(item -> {
+                    favoriteRepository.deleteFavorite(favorite);
+                    return true;
+                });
+            }
         }
     }
 }
