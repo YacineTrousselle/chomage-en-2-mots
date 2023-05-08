@@ -1,23 +1,26 @@
 package fr.ceri.chomageen2mots;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import fr.ceri.chomageen2mots.database.Favorite;
+import fr.ceri.chomageen2mots.database.FavoriteRepository;
+import fr.ceri.chomageen2mots.webservice.Offre;
 import fr.ceri.chomageen2mots.webservice.PoleEmploiApi;
 import fr.ceri.chomageen2mots.webservice.SearchResult;
 
 public class JobResultViewModel extends AndroidViewModel {
     private final PoleEmploiApi poleEmploiApi = PoleEmploiApi.getInstance();
     private final String keyword;
-    private MutableLiveData<SearchResult> lastSearchResult;
     private final MutableLiveData<SearchResult> searchResult;
+    private MutableLiveData<SearchResult> lastSearchResult;
     private MediatorLiveData<SearchResult> resultMediatorLiveData = new MediatorLiveData<>();
     private int pagination = 0;
+    private FavoriteRepository favoriteRepository;
 
     public JobResultViewModel(@NonNull Application application, String keyword) {
         super(application);
@@ -29,6 +32,7 @@ public class JobResultViewModel extends AndroidViewModel {
                 resultMediatorLiveData.postValue(searchResultValue);
             }
         });
+        favoriteRepository = new FavoriteRepository(application);
     }
 
     public void nextPage() {
@@ -56,5 +60,18 @@ public class JobResultViewModel extends AndroidViewModel {
                 pagination = paginationTemp;
             }
         });
+    }
+
+    public void addNewFav(Offre offre) {
+        Favorite favorite = new Favorite(offre);
+        favoriteRepository.insertFavorite(favorite);
+    }
+
+    public void deleteFav(Favorite favorite) {
+        favoriteRepository.deleteFavorite(favorite);
+    }
+
+    public Favorite getFavoriteById(String id) {
+        return favoriteRepository.getFavorite(id);
     }
 }
