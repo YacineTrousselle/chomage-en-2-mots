@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import fr.ceri.chomageen2mots.FavoriteRecyclerAdapter;
 import fr.ceri.chomageen2mots.webservice.Offre;
 
 @Entity(tableName = "favorites")
@@ -18,6 +19,7 @@ public class Favorite {
     public String typeContrat;
     public String dureeTravailLibelle;
 
+    public String url;
     public Favorite(
             @NonNull String id,
             String intitule,
@@ -25,7 +27,8 @@ public class Favorite {
             String logoEntreprise,
             String nomEntreprise,
             String typeContrat,
-            String dureeTravailLibelle
+            String dureeTravailLibelle,
+            String url
     ) {
         this.id = id;
         this.intitule = intitule;
@@ -34,6 +37,7 @@ public class Favorite {
         this.nomEntreprise = nomEntreprise;
         this.typeContrat = typeContrat;
         this.dureeTravailLibelle = dureeTravailLibelle;
+        this.url = url;
     }
 
     public Favorite(Offre offre) {
@@ -44,5 +48,6 @@ public class Favorite {
         this.nomEntreprise = offre.entreprise.nom;
         this.typeContrat = offre.typeContrat;
         this.dureeTravailLibelle = offre.dureeTravailLibelle;
+        this.url = offre.origineOffre.urlOrigine;
     }
 }

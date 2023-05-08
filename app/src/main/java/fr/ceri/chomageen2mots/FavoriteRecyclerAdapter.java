@@ -1,5 +1,10 @@
 package fr.ceri.chomageen2mots;
 
+import android.app.Application;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -14,6 +20,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import fr.ceri.chomageen2mots.database.Favorite;
+import fr.ceri.chomageen2mots.database.FavoriteRepository;
+import fr.ceri.chomageen2mots.webservice.Offre;
 
 public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecyclerAdapter.ViewHolder> {
     private List<Favorite> favorites;
@@ -33,6 +41,8 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
             Picasso.get().load(R.drawable.c).into(holder.img);
         }
         holder.title.setText(favorites.get(position).intitule);
+        holder.id = favorites.get(position).id;
+        holder.url = favorites.get(position).url;
     }
 
     @Override
@@ -47,7 +57,10 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
         this.favorites = favorites;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+        String id;
+        String url;
         ImageView img;
         TextView title;
 
@@ -55,6 +68,31 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
             super(itemView);
             img = itemView.findViewById(R.id.compagny_img);
             title = itemView.findViewById(R.id.title);
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            FavoriteRepository favoriteRepository = new FavoriteRepository(new Application());
+            Favorite favorite = favoriteRepository.getFavorite(id);
+            contextMenu.add(0, 0, 0, "Supprimer des favoris");
+            contextMenu.findItem(0).setOnMenuItemClickListener(item -> {
+                favoriteRepository.deleteFavorite(favorite);
+                return true;
+            });
+            contextMenu.add(1, 1, 1, "Copier le lien").setOnMenuItemClickListener(item -> {
+                Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSS", "The url is : " + favorite.url);
+                // Obtenez le gestionnaire de presse-papiers
+                ClipboardManager clipboardManager = (ClipboardManager) view.getContext().getSystemService(view.getContext().CLIPBOARD_SERVICE);
+
+
+                // Copier la chaîne dans le presse-papiers
+                ClipData clip = ClipData.newPlainText("texte", favorite.url);
+                clipboardManager.setPrimaryClip(clip);
+
+                return true;
+            });
         }
     }
 }

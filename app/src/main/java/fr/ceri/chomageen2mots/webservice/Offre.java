@@ -7,6 +7,9 @@ public class Offre {
     public Entreprise entreprise;
     public String typeContrat;
     public String dureeTravailLibelle;
+
+    public OrigineOffre origineOffre;
+
     @Override
     public String toString() {
         return "Offre{" +
@@ -28,5 +31,9 @@ public class Offre {
                     ", logo='" + logo + '\'' +
                     '}';
         }
+    }
+
+    public static class OrigineOffre {
+        public String urlOrigine;
     }
 }
