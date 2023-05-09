@@ -14,7 +14,8 @@ import fr.ceri.chomageen2mots.webservice.PoleEmploiApi;
 import fr.ceri.chomageen2mots.webservice.SearchResult;
 
 public class JobResultViewModel extends AndroidViewModel {
-    private final PoleEmploiApi poleEmploiApi = PoleEmploiApi.getInstance();
+    private final PoleEmploiApi poleEmploiApi;
+
     private final String keyword;
     private final MutableLiveData<SearchResult> searchResult;
     private MutableLiveData<SearchResult> lastSearchResult;
@@ -24,6 +25,7 @@ public class JobResultViewModel extends AndroidViewModel {
 
     public JobResultViewModel(@NonNull Application application, String keyword) {
         super(application);
+        poleEmploiApi = PoleEmploiApi.getInstance(getApplication());
         this.keyword = keyword;
         lastSearchResult = poleEmploiApi.search(getApplication().getApplicationContext(), keyword, pagination);
         searchResult = lastSearchResult;

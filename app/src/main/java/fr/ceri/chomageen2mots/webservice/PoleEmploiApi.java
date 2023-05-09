@@ -1,7 +1,11 @@
 package fr.ceri.chomageen2mots.webservice;
 
+import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -24,8 +28,10 @@ public class PoleEmploiApi {
     private static PoleEmploiApi INSTANCE = null;
     private static volatile AccessToken accessToken = null;
     private final PEInterface api;
+    private final Application app;
 
-    private PoleEmploiApi() {
+    private PoleEmploiApi(Application app) {
+        this.app = app;
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.pole-emploi.io")
                 .addConverterFactory(MoshiConverterFactory.create())
@@ -33,9 +39,9 @@ public class PoleEmploiApi {
         api = retrofit.create(PEInterface.class);
     }
 
-    public static PoleEmploiApi getInstance() {
+    public static PoleEmploiApi getInstance(Application app) {
         if (INSTANCE == null) {
-            INSTANCE = new PoleEmploiApi();
+            INSTANCE = new PoleEmploiApi(app);
         }
         return INSTANCE;
     }
@@ -55,7 +61,12 @@ public class PoleEmploiApi {
 
                         @Override
                         public void onFailure(@NonNull Call<AccessToken> call, @NonNull Throwable t) {
-                            throw new RuntimeException(t);
+                            Context context = app.getApplicationContext();
+                            CharSequence text = "Pas de connexion";
+                            int duration = Toast.LENGTH_LONG;
+
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
                         }
                     }
             );
@@ -75,12 +86,19 @@ public class PoleEmploiApi {
                             public void onResponse(@NonNull Call<Resultats> call, @NonNull Response<Resultats> response) {
                                 if (response.code() == 200 || response.code() == 206) {
                                     searchResult.postValue(new SearchResult(response.body(), false, response.code()));
+                                    Log.d("MANU", "ANDROID CKROBI1");
+                                    return;
                                 }
                             }
 
                             @Override
                             public void onFailure(@NonNull Call<Resultats> call, @NonNull Throwable t) {
-                                throw new RuntimeException(t);
+                                Context context = app.getApplicationContext();
+                                CharSequence text = "Pas de connexion";
+                                int duration = Toast.LENGTH_LONG;
+
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
                             }
                         }
                 )
