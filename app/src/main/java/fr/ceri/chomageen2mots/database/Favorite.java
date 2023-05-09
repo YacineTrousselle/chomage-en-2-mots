@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import fr.ceri.chomageen2mots.FavoriteRecyclerAdapter;
 import fr.ceri.chomageen2mots.webservice.Offre;
 
 @Entity(tableName = "favorites")
@@ -18,8 +17,8 @@ public class Favorite {
     public String nomEntreprise;
     public String typeContrat;
     public String dureeTravailLibelle;
-
     public String url;
+
     public Favorite(
             @NonNull String id,
             String intitule,

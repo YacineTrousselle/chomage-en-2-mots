@@ -12,8 +12,8 @@ import java.util.concurrent.Future;
 
 
 public class FavoriteRepository {
-    private LiveData<List<Favorite>> allFavorites;
-    private FavoriteDao favoriteDao;
+    private final LiveData<List<Favorite>> allFavorites;
+    private final FavoriteDao favoriteDao;
 
     public FavoriteRepository(Application application) {
         FavoriteDatabase favoriteDatabase = FavoriteDatabase.getDatabase(application);

@@ -17,10 +17,10 @@ public class JobResultViewModel extends AndroidViewModel {
     private final PoleEmploiApi poleEmploiApi = PoleEmploiApi.getInstance();
     private final String keyword;
     private final MutableLiveData<SearchResult> searchResult;
+    private final MediatorLiveData<SearchResult> resultMediatorLiveData = new MediatorLiveData<>();
+    private final FavoriteRepository favoriteRepository;
     private MutableLiveData<SearchResult> lastSearchResult;
-    private MediatorLiveData<SearchResult> resultMediatorLiveData = new MediatorLiveData<>();
     private int pagination = 0;
-    private FavoriteRepository favoriteRepository;
 
     public JobResultViewModel(@NonNull Application application, String keyword) {
         super(application);

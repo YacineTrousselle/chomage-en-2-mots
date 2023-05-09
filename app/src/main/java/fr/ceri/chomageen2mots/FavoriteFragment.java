@@ -2,7 +2,6 @@ package fr.ceri.chomageen2mots;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.Arrays;
 
 public class FavoriteFragment extends Fragment {
     FavoriteViewModel favoriteViewModel;
@@ -41,10 +38,10 @@ public class FavoriteFragment extends Fragment {
         recyclerView.setAdapter(favoriteRecyclerAdapter);
 
         favoriteViewModel.getAllFavorites().observe(getViewLifecycleOwner(),
-            favorites -> {
-                favoriteRecyclerAdapter.setFavorites(favorites);
-                favoriteRecyclerAdapter.notifyDataSetChanged();
-            }
+                favorites -> {
+                    favoriteRecyclerAdapter.setFavorites(favorites);
+                    favoriteRecyclerAdapter.notifyDataSetChanged();
+                }
         );
     }
 

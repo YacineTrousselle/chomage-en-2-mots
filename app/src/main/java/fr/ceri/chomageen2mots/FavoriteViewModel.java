@@ -10,7 +10,6 @@ import java.util.List;
 
 import fr.ceri.chomageen2mots.database.Favorite;
 import fr.ceri.chomageen2mots.database.FavoriteRepository;
-import fr.ceri.chomageen2mots.webservice.Offre;
 
 public class FavoriteViewModel extends AndroidViewModel {
     private final FavoriteRepository favoriteRepository;

@@ -4,36 +4,22 @@ public class Offre {
     public String id;
     public String intitule;
     public String description;
-    public Entreprise entreprise;
     public String typeContrat;
     public String dureeTravailLibelle;
-
+    public Entreprise entreprise;
     public OrigineOffre origineOffre;
-
-    @Override
-    public String toString() {
-        return "Offre{" +
-                "id='" + id + '\'' +
-                ", intitule='" + intitule + '\'' +
-                ", description='" + description + '\'' +
-                ", entreprise=" + entreprise +
-                '}';
-    }
+    public LieuTravail lieuTravail;
 
     public static class Entreprise {
         public String nom;
         public String logo;
-
-        @Override
-        public String toString() {
-            return "Entreprise{" +
-                    "nom='" + nom + '\'' +
-                    ", logo='" + logo + '\'' +
-                    '}';
-        }
     }
 
     public static class OrigineOffre {
         public String urlOrigine;
+    }
+
+    public static class LieuTravail {
+        public String codePostal;
     }
 }

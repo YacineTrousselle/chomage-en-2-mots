@@ -1,12 +1,10 @@
 package fr.ceri.chomageen2mots.webservice;
 
+import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-
-import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;

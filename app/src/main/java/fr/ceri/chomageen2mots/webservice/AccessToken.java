@@ -1,9 +1,5 @@
 package fr.ceri.chomageen2mots.webservice;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.squareup.moshi.Json;
 
 import java.util.Date;
