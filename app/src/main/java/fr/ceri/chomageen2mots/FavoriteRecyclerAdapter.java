@@ -12,12 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import fr.ceri.chomageen2mots.FavoriteFragmentDirections;
 import fr.ceri.chomageen2mots.database.Favorite;
 import fr.ceri.chomageen2mots.database.FavoriteRepository;
 
@@ -67,6 +69,34 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
             img = itemView.findViewById(R.id.compagny_img);
             title = itemView.findViewById(R.id.title);
             itemView.setOnCreateContextMenuListener(this);
+            itemView.setOnClickListener(v -> {
+
+                FavoriteFragmentDirections.ActionFavoriteToDetails action = FavoriteFragmentDirections.actionFavoriteToDetails();
+
+                FavoriteRepository favoriteRepository = new FavoriteRepository(new Application());
+                Favorite favorite = favoriteRepository.getFavorite(id);
+                String infoStr = "";
+                if (favorite.nomEntreprise != null) {
+                    infoStr = favorite.nomEntreprise;
+                }
+                if (favorite.typeContrat != null) {
+                    infoStr += "\n" + favorite.typeContrat + " ";
+                }
+                if (favorite.dureeTravailLibelle != null) {
+                    infoStr += favorite.dureeTravailLibelle;
+                }
+
+                if (favorite.logoEntreprise != null) {
+                    action.setImgUrl(favorite.logoEntreprise);
+                } else {
+                    action.setImgUrl("");
+                }
+
+                action.setTitre(favorite.intitule);
+                action.setDescription(favorite.description);
+                action.setJobInfo(infoStr);
+                Navigation.findNavController(v).navigate(action);
+            });
         }
 
 
@@ -91,6 +121,8 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
 
                 return true;
             });
+
+
         }
     }
 }
