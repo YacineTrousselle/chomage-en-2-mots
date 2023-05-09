@@ -28,10 +28,4 @@ public interface FavoriteDao {
 
     @Delete
     void deleteFavorite(Favorite favorite);
-
-//    @Query("SELECT * FROM favorites " +
-//            "WHERE (:critere1 = '' OR critere1 = :#{filters.critere1}) " +
-//            "AND (:critere2 = '' OR critere2 = :#{filters.critere2}) " +
-//            "AND (:critere3 = '' OR critere3 = :#{filters.critere3})")
-//    void getFilteredFavoris(Filters filters);
 }

@@ -18,6 +18,9 @@ public class Favorite {
     public String typeContrat;
     public String dureeTravailLibelle;
     public String url;
+    public String qualificationCode;
+    public String qualificationLibelle;
+    public String departement;
 
     public Favorite(
             @NonNull String id,
@@ -27,7 +30,10 @@ public class Favorite {
             String nomEntreprise,
             String typeContrat,
             String dureeTravailLibelle,
-            String url
+            String url,
+            String qualificationCode,
+            String qualificationLibelle,
+            String departement
     ) {
         this.id = id;
         this.intitule = intitule;
@@ -37,6 +43,9 @@ public class Favorite {
         this.typeContrat = typeContrat;
         this.dureeTravailLibelle = dureeTravailLibelle;
         this.url = url;
+        this.qualificationCode = qualificationCode;
+        this.qualificationLibelle = qualificationLibelle;
+        this.departement = departement;
     }
 
     public Favorite(Offre offre) {
@@ -48,5 +57,8 @@ public class Favorite {
         this.typeContrat = offre.typeContrat;
         this.dureeTravailLibelle = offre.dureeTravailLibelle;
         this.url = offre.origineOffre.urlOrigine;
+        this.qualificationCode = offre.qualificationCode;
+        this.qualificationLibelle = offre.qualificationLibelle;
+        this.departement = offre.lieuTravail.codePostal.substring(0, 2);
     }
 }

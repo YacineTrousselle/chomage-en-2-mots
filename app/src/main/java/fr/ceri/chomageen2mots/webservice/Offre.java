@@ -6,6 +6,9 @@ public class Offre {
     public String description;
     public String typeContrat;
     public String dureeTravailLibelle;
+    public String qualificationCode;
+    public String qualificationLibelle;
+
     public Entreprise entreprise;
     public OrigineOffre origineOffre;
     public LieuTravail lieuTravail;
