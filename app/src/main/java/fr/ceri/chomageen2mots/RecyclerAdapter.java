@@ -6,6 +6,7 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ import fr.ceri.chomageen2mots.webservice.SearchResult;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private SearchResult searchResult;
+    private ViewGroup parent;
+    private Button button_retry;
 
     @NonNull
     @Override
@@ -39,6 +42,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Log.d("MANU", "searchResult ====> " + searchResult);
+        if(searchResult != null){
+            button_retry.setVisibility(View.INVISIBLE);
+        }
         String infoStr = "";
         if (searchResult.getOffres().get(position).entreprise.nom != null) {
             infoStr = searchResult.getOffres().get(position).entreprise.nom;
@@ -70,9 +77,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public void setSearchResult(SearchResult searchResult) {
+        Log.d("MANU", "searchResult ====> " + searchResult);
         this.searchResult = searchResult;
     }
 
+    public void setBtnRetry(Button btn){
+        Log.d("MANU", "searchResult ====> " + searchResult);
+        button_retry = btn;
+
+    }
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         Offre offre;
         String jobInfo;
