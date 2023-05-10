@@ -21,6 +21,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import fr.ceri.chomageen2mots.database.FavoriteFilters;
+
 public class FavoriteFragment extends Fragment {
     FavoriteViewModel favoriteViewModel;
     RecyclerView recyclerView;
@@ -56,6 +58,7 @@ public class FavoriteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         favoriteViewModel = new ViewModelProvider(this).get(FavoriteViewModel.class);
+        favoriteViewModel.setFavoriteFilters(new FavoriteFilters());
 
         recyclerView = view.findViewById(R.id.favoriteList);
         layoutManager = new GridLayoutManager(requireActivity(), 2);
@@ -63,12 +66,6 @@ public class FavoriteFragment extends Fragment {
         favoriteRecyclerAdapter = new FavoriteRecyclerAdapter();
         recyclerView.setAdapter(favoriteRecyclerAdapter);
 
-        favoriteViewModel.getAllFavorites().observe(getViewLifecycleOwner(),
-                favorites -> {
-                    favoriteRecyclerAdapter.setFavorites(favorites);
-                    favoriteRecyclerAdapter.notifyDataSetChanged();
-                }
-        );
         favoriteViewModel.getFavoriteFilters().observe(getViewLifecycleOwner(),
                 favoriteFilters -> {
                     favoriteRecyclerAdapter.setFavorites(favoriteViewModel.getFilteredFavorites(favoriteFilters));

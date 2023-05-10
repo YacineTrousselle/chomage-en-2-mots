@@ -31,17 +31,17 @@ public interface FavoriteDao {
 
     @Query("SELECT * FROM favorites " +
             "WHERE (:typeContrat = '' or typeContrat = :typeContrat) " +
-            "AND (:qualificationCode = '' or qualificationCode = :qualificationCode) " +
-            "AND (:departement = '' or typeContrat = :departement) "
+            "AND (:qualification = '' or qualificationLibelle = :qualification) " +
+            "AND (:departement = '' or departement = :departement) "
     )
-    List<Favorite> getFilteredFavorites(String typeContrat, String qualificationCode, String departement);
+    List<Favorite> getFilteredFavorites(String typeContrat, String qualification, String departement);
 
     @Query("SELECT DISTINCT typeContrat FROM favorites")
     List<String> getAllTypeContrat();
 
-    @Query("SELECT DISTINCT qualificationCode FROM favorites")
-    List<String> getAllqualificationCode();
+    @Query("SELECT DISTINCT qualificationLibelle FROM favorites")
+    List<String> getAllqualification();
 
-    @Query("SELECT DISTINCT departement FROM favorites")
+    @Query("SELECT DISTINCT departement FROM favorites ORDER BY departement")
     List<String> getAllDepartement();
 }

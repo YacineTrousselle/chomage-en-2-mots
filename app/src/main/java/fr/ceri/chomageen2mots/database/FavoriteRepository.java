@@ -26,7 +26,7 @@ public class FavoriteRepository {
     }
 
     public List<Favorite> getFilteredFavorites(FavoriteFilters filter) {
-        Future<List<Favorite>> filteredFavoritesFuture = databaseWriteExecutor.submit(() -> favoriteDao.getFilteredFavorites(filter.typeContrat, filter.qualificationCode, filter.departement));
+        Future<List<Favorite>> filteredFavoritesFuture = databaseWriteExecutor.submit(() -> favoriteDao.getFilteredFavorites(filter.typeContrat, filter.qualification, filter.departement));
         try {
             return filteredFavoritesFuture.get();
         } catch (ExecutionException | InterruptedException e) {
@@ -52,10 +52,10 @@ public class FavoriteRepository {
         }
     }
 
-    public List<String> getAllqualificationCode() {
-        Future<List<String>> allqualificationCodeFuture = databaseWriteExecutor.submit(favoriteDao::getAllqualificationCode);
+    public List<String> getAllqualification() {
+        Future<List<String>> allqualificationFuture = databaseWriteExecutor.submit(favoriteDao::getAllqualification);
         try {
-            return allqualificationCodeFuture.get();
+            return allqualificationFuture.get();
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }

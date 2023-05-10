@@ -1,6 +1,7 @@
 package fr.ceri.chomageen2mots;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -50,8 +51,9 @@ public class FavoriteViewModel extends AndroidViewModel {
     public List<String> getAllTypeContrat() {
         return favoriteRepository.getAllTypeContrat();
     }
-    public List<String> getAllqualificationCode() {
-        return favoriteRepository.getAllqualificationCode();
+
+    public List<String> getAllqualification() {
+        return favoriteRepository.getAllqualification();
     }
     public List<String> getAllDepartement() {
         return favoriteRepository.getAllDepartement();

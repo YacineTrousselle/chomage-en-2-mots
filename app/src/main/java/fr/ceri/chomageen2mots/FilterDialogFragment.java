@@ -3,6 +3,7 @@ package fr.ceri.chomageen2mots;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.Arrays;
 import java.util.List;
 
 import fr.ceri.chomageen2mots.database.FavoriteFilters;
@@ -37,11 +39,12 @@ public class FilterDialogFragment extends DialogFragment {
         departementSpinner = dialogView.findViewById(R.id.spinner3);
 
         List<String> allTypeContrat = favoriteViewModel.getAllTypeContrat();
-        List<String> allqualificationCode = favoriteViewModel.getAllqualificationCode();
+        List<String> allqualificationCode = favoriteViewModel.getAllqualification();
         List<String> allDepartement = favoriteViewModel.getAllDepartement();
-        allTypeContrat.add(0, "");
-        allqualificationCode.add(0, "");
-        allDepartement.add(0, "");
+        Log.d("jean", "onCreateDialog: " + Arrays.toString(allDepartement.toArray()));
+        allTypeContrat.add(0, "Tout");
+        allqualificationCode.add(0, "Tout");
+        allDepartement.add(0, "Tout");
 
         typeContratSpinner.setAdapter(new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_spinner_dropdown_item, allTypeContrat));
@@ -50,24 +53,25 @@ public class FilterDialogFragment extends DialogFragment {
         departementSpinner.setAdapter(new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_spinner_dropdown_item, allDepartement));
 
-        String defaultTypeContrat = favoriteViewModel.getFavoriteFilters().getValue().typeContrat;
-        String defaultQualificationCode = favoriteViewModel.getFavoriteFilters().getValue().qualificationCode;
-        String defaultDepartement = favoriteViewModel.getFavoriteFilters().getValue().departement;
+        String defaultTypeContrat = getValueToDisplay(favoriteViewModel.getFavoriteFilters().getValue().typeContrat);
+        String defaultQualificationCode = getValueToDisplay(favoriteViewModel.getFavoriteFilters().getValue().qualification);
+        String defaultDepartement = getValueToDisplay(favoriteViewModel.getFavoriteFilters().getValue().departement);
 
         typeContratSpinner.setSelection(allTypeContrat.indexOf(defaultTypeContrat));
         qualificationCodeSpinner.setSelection(allqualificationCode.indexOf(defaultQualificationCode));
         departementSpinner.setSelection(allDepartement.indexOf(defaultDepartement));
 
         builder.setView(dialogView)
-                .setTitle("Sélectionnez les options")
-                .setPositiveButton("Submit", (dialogInterface, i) -> {
+                .setTitle("Filtrer les favoris")
+                .setPositiveButton("Filtrer", (dialogInterface, i) -> {
                     String typeContrat = typeContratSpinner.getSelectedItem().toString();
                     String qualificationCode = qualificationCodeSpinner.getSelectedItem().toString();
                     String departement = departementSpinner.getSelectedItem().toString();
+
                     FavoriteFilters favoriteFilters = new FavoriteFilters();
-                    favoriteFilters.typeContrat = typeContrat;
-                    favoriteFilters.qualificationCode = qualificationCode;
-                    favoriteFilters.departement = departement;
+                    favoriteFilters.typeContrat = getValueToDisplay(typeContrat);
+                    favoriteFilters.qualification = getValueToDisplay(qualificationCode);
+                    favoriteFilters.departement = getValueToDisplay(departement);
                     favoriteViewModel.setFavoriteFilters(favoriteFilters);
                 })
                 .setNegativeButton("Réinitialiser", (dialogInterface, i) -> {
@@ -78,5 +82,12 @@ public class FilterDialogFragment extends DialogFragment {
                 });
 
         return builder.create();
+    }
+
+    public String getValueToDisplay(String filter) {
+        if (filter.equals("Tout")) {
+            return "";
+        }
+        return filter;
     }
 }
