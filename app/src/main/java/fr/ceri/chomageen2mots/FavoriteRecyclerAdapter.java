@@ -19,7 +19,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import fr.ceri.chomageen2mots.FavoriteFragmentDirections;
 import fr.ceri.chomageen2mots.database.Favorite;
 import fr.ceri.chomageen2mots.database.FavoriteRepository;
 

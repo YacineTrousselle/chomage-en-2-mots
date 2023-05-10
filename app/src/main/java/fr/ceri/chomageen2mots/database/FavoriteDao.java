@@ -28,4 +28,20 @@ public interface FavoriteDao {
 
     @Delete
     void deleteFavorite(Favorite favorite);
+
+    @Query("SELECT * FROM favorites " +
+            "WHERE (:typeContrat = '' or typeContrat = :typeContrat) " +
+            "AND (:qualificationCode = '' or qualificationCode = :qualificationCode) " +
+            "AND (:departement = '' or typeContrat = :departement) "
+    )
+    List<Favorite> getFilteredFavorites(String typeContrat, String qualificationCode, String departement);
+
+    @Query("SELECT DISTINCT typeContrat FROM favorites")
+    List<String> getAllTypeContrat();
+
+    @Query("SELECT DISTINCT qualificationCode FROM favorites")
+    List<String> getAllqualificationCode();
+
+    @Query("SELECT DISTINCT departement FROM favorites")
+    List<String> getAllDepartement();
 }

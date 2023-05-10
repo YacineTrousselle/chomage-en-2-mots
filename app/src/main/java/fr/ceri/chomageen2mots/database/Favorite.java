@@ -61,4 +61,21 @@ public class Favorite {
         this.qualificationLibelle = offre.qualificationLibelle;
         this.departement = offre.lieuTravail.codePostal.substring(0, 2);
     }
+
+    @Override
+    public String toString() {
+        return "Favorite{" +
+                "id='" + id + '\'' +
+                ", intitule='" + intitule + '\'' +
+                ", description='" + description + '\'' +
+                ", logoEntreprise='" + logoEntreprise + '\'' +
+                ", nomEntreprise='" + nomEntreprise + '\'' +
+                ", typeContrat='" + typeContrat + '\'' +
+                ", dureeTravailLibelle='" + dureeTravailLibelle + '\'' +
+                ", url='" + url + '\'' +
+                ", qualificationCode='" + qualificationCode + '\'' +
+                ", qualificationLibelle='" + qualificationLibelle + '\'' +
+                ", departement='" + departement + '\'' +
+                '}';
+    }
 }

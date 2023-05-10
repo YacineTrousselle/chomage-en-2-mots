@@ -22,16 +22,50 @@ public class FavoriteRepository {
     }
 
     public LiveData<List<Favorite>> getAllFavorites() {
-        return allFavorites;
+        return favoriteDao.getAll();
+    }
+
+    public List<Favorite> getFilteredFavorites(FavoriteFilters filter) {
+        Future<List<Favorite>> filteredFavoritesFuture = databaseWriteExecutor.submit(() -> favoriteDao.getFilteredFavorites(filter.typeContrat, filter.qualificationCode, filter.departement));
+        try {
+            return filteredFavoritesFuture.get();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Favorite getFavorite(String id) {
         Future<Favorite> favoriteFuture = databaseWriteExecutor.submit(() -> favoriteDao.getById(id));
         try {
             return favoriteFuture.get();
-        } catch (ExecutionException e) {
+        } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        }
+    }
+
+    public List<String> getAllTypeContrat() {
+        Future<List<String>> allTypeContratFuture = databaseWriteExecutor.submit(favoriteDao::getAllTypeContrat);
+        try {
+            return allTypeContratFuture.get();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<String> getAllqualificationCode() {
+        Future<List<String>> allqualificationCodeFuture = databaseWriteExecutor.submit(favoriteDao::getAllqualificationCode);
+        try {
+            return allqualificationCodeFuture.get();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<String> getAllDepartement() {
+        Future<List<String>> allDepartementFuture = databaseWriteExecutor.submit(favoriteDao::getAllDepartement);
+        try {
+            return allDepartementFuture.get();
+        } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
