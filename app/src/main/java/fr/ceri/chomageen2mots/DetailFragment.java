@@ -7,15 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
 
 public class DetailFragment extends Fragment {
-     private TextView jobInfo, jobDescription, jobTitle;
-     private ImageView imageView;
-     String description, titre, jobInfoText, imgUrl;
+    private TextView jobInfo, jobDescription, jobTitle;
+    private ImageView imageView;
+    String description, titre, jobInfoText, imgUrl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

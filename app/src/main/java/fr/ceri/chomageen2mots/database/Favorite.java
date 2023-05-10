@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import fr.ceri.chomageen2mots.FavoriteRecyclerAdapter;
 import fr.ceri.chomageen2mots.webservice.Offre;
 
 @Entity(tableName = "favorites")
@@ -18,8 +17,11 @@ public class Favorite {
     public String nomEntreprise;
     public String typeContrat;
     public String dureeTravailLibelle;
-
     public String url;
+    public String qualificationCode;
+    public String qualificationLibelle;
+    public String departement;
+
     public Favorite(
             @NonNull String id,
             String intitule,
@@ -28,7 +30,10 @@ public class Favorite {
             String nomEntreprise,
             String typeContrat,
             String dureeTravailLibelle,
-            String url
+            String url,
+            String qualificationCode,
+            String qualificationLibelle,
+            String departement
     ) {
         this.id = id;
         this.intitule = intitule;
@@ -38,6 +43,9 @@ public class Favorite {
         this.typeContrat = typeContrat;
         this.dureeTravailLibelle = dureeTravailLibelle;
         this.url = url;
+        this.qualificationCode = qualificationCode;
+        this.qualificationLibelle = qualificationLibelle;
+        this.departement = departement;
     }
 
     public Favorite(Offre offre) {
@@ -49,5 +57,25 @@ public class Favorite {
         this.typeContrat = offre.typeContrat;
         this.dureeTravailLibelle = offre.dureeTravailLibelle;
         this.url = offre.origineOffre.urlOrigine;
+        this.qualificationCode = offre.qualificationCode;
+        this.qualificationLibelle = offre.qualificationLibelle;
+        this.departement = offre.lieuTravail.codePostal.substring(0, 2);
+    }
+
+    @Override
+    public String toString() {
+        return "Favorite{" +
+                "id='" + id + '\'' +
+                ", intitule='" + intitule + '\'' +
+                ", description='" + description + '\'' +
+                ", logoEntreprise='" + logoEntreprise + '\'' +
+                ", nomEntreprise='" + nomEntreprise + '\'' +
+                ", typeContrat='" + typeContrat + '\'' +
+                ", dureeTravailLibelle='" + dureeTravailLibelle + '\'' +
+                ", url='" + url + '\'' +
+                ", qualificationCode='" + qualificationCode + '\'' +
+                ", qualificationLibelle='" + qualificationLibelle + '\'' +
+                ", departement='" + departement + '\'' +
+                '}';
     }
 }

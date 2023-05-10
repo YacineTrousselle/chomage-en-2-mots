@@ -1,5 +1,6 @@
 package fr.ceri.chomageen2mots;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +11,6 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,9 +24,6 @@ public class JobResultFragment extends Fragment {
     private RecyclerAdapter adapter;
     private JobResultViewModel jobResultViewModel;
 
-    private SearchResult searchResult;
-
-    private Button button_retry;
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
@@ -38,6 +35,7 @@ public class JobResultFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         jobResultViewModel = new ViewModelProvider(this,
@@ -48,22 +46,18 @@ public class JobResultFragment extends Fragment {
         adapter.setBtnRetry(view.findViewById(R.id.button_retry));
         jobResultViewModel.getResultMediatorLiveData().observe(getViewLifecycleOwner(),
                 searchResult -> {
-                        adapter.setSearchResult(searchResult);
-                        adapter.notifyDataSetChanged();
-
-                }
-        );
-        button_retry = view.findViewById(R.id.button_retry);
-        button_retry.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.d("MANU", "Retry bro");
-                LiveData<SearchResult> retryLiveData = jobResultViewModel.retryResultMediatorLiveData();
-                retryLiveData.removeObservers(getViewLifecycleOwner()); // Remove any existing observer
-                retryLiveData.observe(getViewLifecycleOwner(), searchResult -> {
                     adapter.setSearchResult(searchResult);
                     adapter.notifyDataSetChanged();
-                });
-            }
+                }
+        );
+        Button button_retry = view.findViewById(R.id.button_retry);
+        button_retry.setOnClickListener(v -> {
+            LiveData<SearchResult> retryLiveData = jobResultViewModel.retryResultMediatorLiveData();
+            retryLiveData.removeObservers(getViewLifecycleOwner()); // Remove any existing observer
+            retryLiveData.observe(getViewLifecycleOwner(), searchResult -> {
+                adapter.setSearchResult(searchResult);
+                adapter.notifyDataSetChanged();
+            });
         });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);

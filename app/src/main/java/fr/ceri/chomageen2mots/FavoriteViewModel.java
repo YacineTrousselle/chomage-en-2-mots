@@ -1,19 +1,22 @@
 package fr.ceri.chomageen2mots;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
 import fr.ceri.chomageen2mots.database.Favorite;
+import fr.ceri.chomageen2mots.database.FavoriteFilters;
 import fr.ceri.chomageen2mots.database.FavoriteRepository;
-import fr.ceri.chomageen2mots.webservice.Offre;
 
 public class FavoriteViewModel extends AndroidViewModel {
     private final FavoriteRepository favoriteRepository;
+    private MutableLiveData<FavoriteFilters> favoriteFilters = new MutableLiveData<>(new FavoriteFilters());
 
     public FavoriteViewModel(@NonNull Application application) {
         super(application);
@@ -31,5 +34,28 @@ public class FavoriteViewModel extends AndroidViewModel {
 
     public Favorite getFavoriteById(String id) {
         return favoriteRepository.getFavorite(id);
+    }
+
+    public void setFavoriteFilters(FavoriteFilters favoriteFilters) {
+        this.favoriteFilters.setValue(favoriteFilters);
+    }
+
+    public MutableLiveData<FavoriteFilters> getFavoriteFilters() {
+        return favoriteFilters;
+    }
+
+    public List<Favorite> getFilteredFavorites(FavoriteFilters favoriteFilters) {
+        return favoriteRepository.getFilteredFavorites(favoriteFilters);
+    }
+
+    public List<String> getAllTypeContrat() {
+        return favoriteRepository.getAllTypeContrat();
+    }
+
+    public List<String> getAllqualification() {
+        return favoriteRepository.getAllqualification();
+    }
+    public List<String> getAllDepartement() {
+        return favoriteRepository.getAllDepartement();
     }
 }
