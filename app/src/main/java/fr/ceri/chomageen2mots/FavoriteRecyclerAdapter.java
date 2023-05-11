@@ -19,10 +19,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import fr.ceri.chomageen2mots.FavoriteFragmentDirections;
 import fr.ceri.chomageen2mots.database.Favorite;
 import fr.ceri.chomageen2mots.database.FavoriteRepository;
-import fr.ceri.chomageen2mots.webservice.Offre;
 
 public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecyclerAdapter.ViewHolder> {
     private List<Favorite> favorites;

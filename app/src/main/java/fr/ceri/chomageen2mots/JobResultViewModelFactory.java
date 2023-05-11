@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 public class JobResultViewModelFactory extends ViewModelProvider.AndroidViewModelFactory {
-    private Application application;
-    private String keyword;
+    private final Application application;
+    private final String keyword;
 
     public JobResultViewModelFactory(@NonNull Application application, String keyword) {
         super(application);

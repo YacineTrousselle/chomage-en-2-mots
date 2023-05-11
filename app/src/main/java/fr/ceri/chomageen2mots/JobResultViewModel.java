@@ -17,14 +17,16 @@ public class JobResultViewModel extends AndroidViewModel {
     private final PoleEmploiApi poleEmploiApi;
 
     private final String keyword;
-    private final MutableLiveData<SearchResult> searchResult;
+    private MutableLiveData<SearchResult> searchResult;
     private MutableLiveData<SearchResult> lastSearchResult;
     private MediatorLiveData<SearchResult> resultMediatorLiveData = new MediatorLiveData<>();
     private int pagination = 0;
     private FavoriteRepository favoriteRepository;
+    private Application application;
 
     public JobResultViewModel(@NonNull Application application, String keyword) {
         super(application);
+        application = application;
         poleEmploiApi = PoleEmploiApi.getInstance(getApplication());
         this.keyword = keyword;
         lastSearchResult = poleEmploiApi.search(getApplication().getApplicationContext(), keyword, pagination);
@@ -52,6 +54,23 @@ public class JobResultViewModel extends AndroidViewModel {
     public MediatorLiveData<SearchResult> getResultMediatorLiveData() {
         return resultMediatorLiveData;
     }
+
+
+    public MediatorLiveData<SearchResult> retryResultMediatorLiveData() {
+        resultMediatorLiveData.removeSource(searchResult); // Remove the previous source
+
+        lastSearchResult = poleEmploiApi.search(getApplication().getApplicationContext(), keyword, pagination);
+        searchResult = lastSearchResult;
+
+        resultMediatorLiveData.addSource(searchResult, searchResultValue -> {
+            if (!searchResultValue.getOffres().isEmpty()) {
+                resultMediatorLiveData.setValue(searchResultValue); // Use setValue instead of postValue
+            }
+        });
+
+        return getResultMediatorLiveData();
+    }
+
 
     private void loadData(boolean isNextPage) {
         int paginationTemp = isNextPage ? pagination + 1 : pagination - 1;
