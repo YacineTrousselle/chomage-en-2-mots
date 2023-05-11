@@ -36,12 +36,12 @@ public interface FavoriteDao {
     )
     List<Favorite> getFilteredFavorites(String typeContrat, String qualification, String departement);
 
-    @Query("SELECT DISTINCT typeContrat FROM favorites")
+    @Query("SELECT DISTINCT typeContrat FROM favorites WHERE typeContrat != ''")
     List<String> getAllTypeContrat();
 
-    @Query("SELECT DISTINCT qualificationLibelle FROM favorites")
+    @Query("SELECT DISTINCT qualificationLibelle FROM favorites WHERE qualificationLibelle != ''")
     List<String> getAllqualification();
 
-    @Query("SELECT DISTINCT departement FROM favorites ORDER BY departement")
+    @Query("SELECT DISTINCT departement FROM favorites WHERE departement != '' ORDER BY departement")
     List<String> getAllDepartement();
 }

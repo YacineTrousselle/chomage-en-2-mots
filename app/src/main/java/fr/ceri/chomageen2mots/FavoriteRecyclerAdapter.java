@@ -75,7 +75,6 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
             });
         }
 
-
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
             FavoriteRepository favoriteRepository = new FavoriteRepository(new Application());
