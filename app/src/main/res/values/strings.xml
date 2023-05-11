@@ -1,21 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Chomage en 2 mots</string>
+    <string name="app_name">Chômage en 2 mots</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="job_result_label">Job Result Fragment</string>
-    <string name="search_job_label">Search Job</string>
+    <string name="job_result_label">Résultats UwU</string>
+    <string name="search_job_label">Accueil de bogosse</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="configuration_fragment">Configuration</string>
     <string name="favoris">Favoris</string>
     <string name="entreprise_img">image de l\'entreprise</string>
-    <string name="details">Detail</string>
+    <string name="details">Offre</string>
     <string name="type_de_contrat">Type de contrat</string>
     <string name="qualification_code">Qualification code</string>
     <string name="d_partement">Département</string>
     <string name="filtrer">Filtrer</string>
+    <string name="summary">Cette application permet de rechercher et consulter des offres Pôle Emploi. Une connexion internet est requise. La première page contient une barre de recherche ainsi que cette présentation. Lorsqu\'une recherche est effectué, une liste d\'offres apparaît. Il est possible de filtrer les résultats en se rendant dans les paramètres de l\'application En cliquant sur une offre une page de détails s\'affiche. Une offre peut être ajouter aux favoris. La liste des favoris est accesible hors-ligne. Il est possible de les filtrer.</string>
 
 </resources>
