@@ -59,7 +59,7 @@ public class Favorite {
         this.url = offre.origineOffre.urlOrigine;
         this.qualificationCode = offre.qualificationCode;
         this.qualificationLibelle = offre.qualificationLibelle;
-        if (departement != null && departement.length() > 2) {
+        if (offre.lieuTravail.codePostal != null && offre.lieuTravail.codePostal.length() >= 2) {
             this.departement = offre.lieuTravail.codePostal.substring(0, 2);
         }
     }

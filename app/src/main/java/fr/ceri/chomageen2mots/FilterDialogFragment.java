@@ -41,7 +41,7 @@ public class FilterDialogFragment extends DialogFragment {
         List<String> allTypeContrat = favoriteViewModel.getAllTypeContrat();
         List<String> allqualificationCode = favoriteViewModel.getAllqualification();
         List<String> allDepartement = favoriteViewModel.getAllDepartement();
-        Log.d("jean", "onCreateDialog: " + Arrays.toString(allDepartement.toArray()));
+
         allTypeContrat.add(0, "Tout");
         allqualificationCode.add(0, "Tout");
         allDepartement.add(0, "Tout");
