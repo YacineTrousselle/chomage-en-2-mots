@@ -64,6 +64,25 @@ public class Favorite {
         }
     }
 
+    public Offre favoriteToFakeOffre() {
+        Offre offre = new Offre();
+        offre.entreprise = new Offre.Entreprise();
+        offre.lieuTravail = new Offre.LieuTravail();
+        offre.origineOffre = new Offre.OrigineOffre();
+        offre.id = this.id;
+        offre.intitule = this.intitule;
+        offre.description = this.description;
+        offre.entreprise.logo = this.logoEntreprise;
+        offre.entreprise.nom = this.nomEntreprise;
+        offre.typeContrat = this.typeContrat;
+        offre.dureeTravailLibelle = this.dureeTravailLibelle;
+        offre.origineOffre.urlOrigine = this.url;
+        offre.qualificationCode = this.qualificationCode;
+        offre.qualificationLibelle = this.qualificationLibelle;
+        offre.lieuTravail.codePostal = this.departement;
+        return offre;
+    }
+
     public String getInfo() {
         String info = intitule;
         if (typeContrat != null) {

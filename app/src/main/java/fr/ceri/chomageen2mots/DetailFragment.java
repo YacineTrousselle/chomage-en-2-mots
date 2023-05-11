@@ -1,6 +1,7 @@
 package fr.ceri.chomageen2mots;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,49 +15,42 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
-import fr.ceri.chomageen2mots.database.Favorite;
-import fr.ceri.chomageen2mots.database.FavoriteRepository;
-import fr.ceri.chomageen2mots.webservice.Offre;
-import fr.ceri.chomageen2mots.webservice.PoleEmploiApi;
-
 public class DetailFragment extends Fragment {
-    private final MutableLiveData<Boolean> isFavorite = new MutableLiveData<>();
     String id;
-    MutableLiveData<Offre> offreMutableLiveData;
     private TextView jobInfo, jobDescription, jobTitle;
     private ImageView imageView;
-    private FavoriteRepository favoriteRepository;
-    private MenuItem favToogleMenuItem;
+    private MutableLiveData<MenuItem> favToogleMenuItem = new MutableLiveData<>();
+    private DetailViewModel detailViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             id = getArguments().getString("id");
         }
-        favoriteRepository = new FavoriteRepository(requireActivity().getApplication());
-        setHasOptionsMenu(true);
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        favToogleMenuItem = menu.findItem(R.id.fav_toogle);
-        favToogleMenuItem.setVisible(true);
-        isFavorite.setValue(favoriteRepository.getFavorite(id) != null);
-        favToogleMenuItem.setVisible(true);
-
+        favToogleMenuItem.setValue(menu.findItem(R.id.fav_toogle));
+        favToogleMenuItem.getValue().setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.details_fragment, container, false);
-        PoleEmploiApi poleEmploiApi = PoleEmploiApi.getInstance(requireActivity().getApplication());
+
+        detailViewModel = new ViewModelProvider(this,
+                new DetailViewModelFactory(requireActivity().getApplication(), id)).get(DetailViewModel.class);
+
         jobInfo = rootView.findViewById(R.id.jobInfo);
         jobDescription = rootView.findViewById(R.id.jobDescription);
         jobTitle = rootView.findViewById(R.id.job_title);
@@ -66,8 +60,7 @@ public class DetailFragment extends Fragment {
             jobTitle.setText("Une erreur est survenue");
             return rootView;
         }
-        offreMutableLiveData = poleEmploiApi.getOffre(id);
-        offreMutableLiveData.observe(getViewLifecycleOwner(),
+        detailViewModel.getOffreMutableLiveData().observe(getViewLifecycleOwner(),
                 offre -> {
                     if (offre != null) {
                         jobInfo.setText(offre.getInfo());
@@ -79,24 +72,28 @@ public class DetailFragment extends Fragment {
                         } else {
                             Picasso.get().load(R.drawable.c).into(imageView);
                         }
-                        isFavorite.observe(getViewLifecycleOwner(),
-                                aBoolean -> {
-                                    if (aBoolean) {
-                                        favToogleMenuItem.setTitle("Supprimer");
-                                        favToogleMenuItem.setOnMenuItemClickListener(item -> {
-                                            favoriteRepository.deleteFavorite(favoriteRepository.getFavorite(id));
-                                            isFavorite.setValue(false);
-                                            return true;
-                                        });
-                                    } else {
-                                        favToogleMenuItem.setTitle("Ajouter");
-                                        favToogleMenuItem.setOnMenuItemClickListener(item -> {
-                                            favoriteRepository.insertFavorite(new Favorite(offre));
-                                            isFavorite.setValue(true);
-                                            return true;
-                                        });
-                                    }
+                        favToogleMenuItem.observe(getViewLifecycleOwner(),
+                            menuItem -> {
+                                if (menuItem != null) {
+                                    detailViewModel.getIsFavorite().observe(getViewLifecycleOwner(),
+                                            isFav -> {
+                                                if (isFav) {
+                                                    menuItem.setTitle("Supprimer");
+                                                    menuItem.setOnMenuItemClickListener(item -> {
+                                                        detailViewModel.deleteFavorite();
+                                                        return true;
+                                                    });
+                                                } else {
+                                                    menuItem.setTitle("Ajouter");
+                                                    menuItem.setOnMenuItemClickListener(item -> {
+                                                        detailViewModel.addFavorite(offre);
+                                                        return true;
+                                                    });
+                                                }
+                                            }
+                                    );
                                 }
+                            }
                         );
                     }
                 }
