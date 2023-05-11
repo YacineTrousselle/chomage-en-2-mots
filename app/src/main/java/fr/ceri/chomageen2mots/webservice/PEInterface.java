@@ -8,6 +8,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
@@ -29,5 +30,11 @@ public interface PEInterface {
             @QueryMap Map<String, String> params,
             @Query("motsCles") String keyword,
             @Query("range") String range
+    );
+
+    @GET("/partenaire/offresdemploi/v2/offres/{id}")
+    Call<Offre> getOffre(
+        @Header("Authorization") String accessToken,
+        @Path("id") String id
     );
 }

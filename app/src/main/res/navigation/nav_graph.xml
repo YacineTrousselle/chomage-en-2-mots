@@ -8,15 +8,14 @@
         android:id="@+id/JobSearchFragment"
         android:name="fr.ceri.chomageen2mots.JobSearchFragment"
         android:label="@string/search_job_label"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_SearchFragment_to_ResultFragment"
             app:destination="@id/JobResultFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -32,15 +31,15 @@
 
         <argument
             android:name="keyword"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
 
     <fragment
         android:id="@+id/FavoriteFragment"
         android:name="fr.ceri.chomageen2mots.FavoriteFragment"
         android:label="@string/favoris"
-        tools:layout="@layout/fragment_favorite" >
+        tools:layout="@layout/fragment_favorite">
 
         <action
             android:id="@+id/action_favorite_to_details"
@@ -59,24 +58,27 @@
         android:id="@+id/DetailFragment"
         android:name="fr.ceri.chomageen2mots.DetailFragment"
         android:label="@string/details"
-        tools:layout="@layout/details_fragment"
-        >
+        tools:layout="@layout/details_fragment">
+        <argument
+            android:name="id"
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="description"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="titre"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="jobInfo"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="imgUrl"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
 
 </navigation>

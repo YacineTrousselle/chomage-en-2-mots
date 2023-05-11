@@ -25,4 +25,18 @@ public class Offre {
     public static class LieuTravail {
         public String codePostal;
     }
+
+    public String getInfo() {
+        String infoStr = "";
+        if (entreprise.nom != null) {
+            infoStr = entreprise.nom + "\n";
+        }
+        if (entreprise.nom != null) {
+            infoStr +=  typeContrat + " ";
+        }
+        if (dureeTravailLibelle != null) {
+            infoStr += dureeTravailLibelle;
+        }
+        return infoStr;
+    }
 }

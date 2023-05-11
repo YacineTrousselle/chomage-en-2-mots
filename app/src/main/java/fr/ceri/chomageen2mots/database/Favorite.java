@@ -59,7 +59,24 @@ public class Favorite {
         this.url = offre.origineOffre.urlOrigine;
         this.qualificationCode = offre.qualificationCode;
         this.qualificationLibelle = offre.qualificationLibelle;
-        this.departement = offre.lieuTravail.codePostal.substring(0, 2);
+        if (departement != null && departement.length() > 2) {
+            this.departement = offre.lieuTravail.codePostal.substring(0, 2);
+        }
+    }
+
+    public String getInfo() {
+        String info = intitule;
+        if (typeContrat != null) {
+            info += "\nType Contrat: " + typeContrat;
+        }
+        if (qualificationLibelle != null) {
+            info += "\nQualification: " + qualificationLibelle;
+        }
+        if (departement != null) {
+            info += "\nDepartement: " + departement;
+        }
+
+        return info;
     }
 
     @Override

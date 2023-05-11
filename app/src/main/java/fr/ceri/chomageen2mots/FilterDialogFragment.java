@@ -19,8 +19,8 @@ import java.util.List;
 import fr.ceri.chomageen2mots.database.FavoriteFilters;
 
 public class FilterDialogFragment extends DialogFragment {
-    private Spinner typeContratSpinner, qualificationCodeSpinner, departementSpinner;
     private final FavoriteViewModel favoriteViewModel;
+    private Spinner typeContratSpinner, qualificationCodeSpinner, departementSpinner;
 
     public FilterDialogFragment(FavoriteViewModel favoriteViewModel) {
         this.favoriteViewModel = favoriteViewModel;
