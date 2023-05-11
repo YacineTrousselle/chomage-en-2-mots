@@ -16,7 +16,7 @@ import fr.ceri.chomageen2mots.database.FavoriteRepository;
 
 public class FavoriteViewModel extends AndroidViewModel {
     private final FavoriteRepository favoriteRepository;
-    private MutableLiveData<FavoriteFilters> favoriteFilters = new MutableLiveData<>(new FavoriteFilters());
+    private final MutableLiveData<FavoriteFilters> favoriteFilters = new MutableLiveData<>(new FavoriteFilters());
 
     public FavoriteViewModel(@NonNull Application application) {
         super(application);
@@ -30,6 +30,7 @@ public class FavoriteViewModel extends AndroidViewModel {
 
     public void deleteFav(Favorite favorite) {
         favoriteRepository.deleteFavorite(favorite);
+        favoriteFilters.setValue(new FavoriteFilters());
     }
 
     public Favorite getFavoriteById(String id) {

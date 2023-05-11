@@ -63,7 +63,7 @@ public class FavoriteFragment extends Fragment {
         recyclerView = view.findViewById(R.id.favoriteList);
         layoutManager = new GridLayoutManager(requireActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
-        favoriteRecyclerAdapter = new FavoriteRecyclerAdapter();
+        favoriteRecyclerAdapter = new FavoriteRecyclerAdapter(favoriteViewModel);
         recyclerView.setAdapter(favoriteRecyclerAdapter);
 
         favoriteViewModel.getFavoriteFilters().observe(getViewLifecycleOwner(),

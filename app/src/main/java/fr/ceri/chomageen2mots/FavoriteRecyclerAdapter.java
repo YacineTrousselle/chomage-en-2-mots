@@ -1,5 +1,6 @@
 package fr.ceri.chomageen2mots;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -24,6 +25,11 @@ import fr.ceri.chomageen2mots.database.FavoriteRepository;
 
 public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecyclerAdapter.ViewHolder> {
     private List<Favorite> favorites;
+    private FavoriteViewModel favoriteViewModel;
+
+    public FavoriteRecyclerAdapter(FavoriteViewModel favoriteViewModel) {
+        this.favoriteViewModel = favoriteViewModel;
+    }
 
     @NonNull
     @Override
@@ -56,7 +62,7 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
         this.favorites = favorites;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         String id;
         String url;
         ImageView img;
@@ -75,13 +81,16 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
             });
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
             FavoriteRepository favoriteRepository = new FavoriteRepository(new Application());
             Favorite favorite = favoriteRepository.getFavorite(id);
             contextMenu.add(0, 0, 0, "Supprimer des favoris");
             contextMenu.findItem(0).setOnMenuItemClickListener(item -> {
-                favoriteRepository.deleteFavorite(favorite);
+                favoriteViewModel.deleteFav(favorite);
+                setFavorites(favoriteViewModel.getFilteredFavorites(favoriteViewModel.getFavoriteFilters().getValue()));
+                notifyDataSetChanged();
                 return true;
             });
             contextMenu.add(1, 1, 1, "Copier le lien").setOnMenuItemClickListener(item -> {
