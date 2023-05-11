@@ -4,7 +4,13 @@
     tools:context="fr.ceri.chomageen2mots.MainActivity">
     <item
         android:id="@+id/filtrer"
-        android:title="Filtrer"
+        android:title="@string/filtrer"
+        app:showAsAction="ifRoom"
+        android:visible="false"
+        />
+    <item
+        android:id="@+id/fav_toogle"
+        android:title=""
         app:showAsAction="ifRoom"
         android:visible="false"
         />

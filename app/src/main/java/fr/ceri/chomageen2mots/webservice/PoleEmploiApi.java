@@ -8,6 +8,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -82,8 +84,6 @@ public class PoleEmploiApi {
                             public void onResponse(@NonNull Call<Resultats> call, @NonNull Response<Resultats> response) {
                                 if (response.code() == 200 || response.code() == 206) {
                                     searchResult.postValue(new SearchResult(response.body(), false, response.code()));
-                                    Log.d("MANU", "ANDROID CKROBI1");
-                                    return;
                                 }
                             }
 
@@ -100,5 +100,31 @@ public class PoleEmploiApi {
                 )
         );
         return searchResult;
+    }
+
+    public MutableLiveData<Offre> getOffre(String id) {
+        MutableLiveData<Offre> result = new MutableLiveData<>();
+        callApi(token -> {
+            api.getOffre("Bearer " + token, id).enqueue(
+                    new Callback<Offre>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Offre> call, @NonNull Response<Offre> response) {
+                            result.postValue(response.body());
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<Offre> call, @NonNull Throwable t) {
+                            Context context = app.getApplicationContext();
+                            CharSequence text = "Impossible de récupérer l'offre";
+                            int duration = Toast.LENGTH_LONG;
+
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }
+            );
+        });
+
+        return result;
     }
 }

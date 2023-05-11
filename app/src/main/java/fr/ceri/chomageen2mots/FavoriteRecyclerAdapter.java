@@ -3,7 +3,7 @@ package fr.ceri.chomageen2mots;
 import android.app.Application;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.util.Log;
+import android.content.Context;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +39,7 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
         } else {
             Picasso.get().load(R.drawable.c).into(holder.img);
         }
-        holder.title.setText(favorites.get(position).intitule);
+        holder.info.setText(favorites.get(position).getInfo());
         holder.id = favorites.get(position).id;
         holder.url = favorites.get(position).url;
     }
@@ -56,44 +56,21 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
         this.favorites = favorites;
     }
 
-
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         String id;
         String url;
         ImageView img;
-        TextView title;
+        TextView info;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.compagny_img);
-            title = itemView.findViewById(R.id.title);
+            info = itemView.findViewById(R.id.info);
             itemView.setOnCreateContextMenuListener(this);
             itemView.setOnClickListener(v -> {
-
                 FavoriteFragmentDirections.ActionFavoriteToDetails action = FavoriteFragmentDirections.actionFavoriteToDetails();
+                action.setId(id);
 
-                FavoriteRepository favoriteRepository = new FavoriteRepository(new Application());
-                Favorite favorite = favoriteRepository.getFavorite(id);
-                String infoStr = "";
-                if (favorite.nomEntreprise != null) {
-                    infoStr = favorite.nomEntreprise;
-                }
-                if (favorite.typeContrat != null) {
-                    infoStr += "\n" + favorite.typeContrat + " ";
-                }
-                if (favorite.dureeTravailLibelle != null) {
-                    infoStr += favorite.dureeTravailLibelle;
-                }
-
-                if (favorite.logoEntreprise != null) {
-                    action.setImgUrl(favorite.logoEntreprise);
-                } else {
-                    action.setImgUrl("");
-                }
-
-                action.setTitre(favorite.intitule);
-                action.setDescription(favorite.description);
-                action.setJobInfo(infoStr);
                 Navigation.findNavController(v).navigate(action);
             });
         }
@@ -109,10 +86,8 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
                 return true;
             });
             contextMenu.add(1, 1, 1, "Copier le lien").setOnMenuItemClickListener(item -> {
-                Log.d("MANULEBOSSSSSSSSSSSSSSSSSSSSSSS", "The url is : " + favorite.url);
                 // Obtenez le gestionnaire de presse-papiers
-                ClipboardManager clipboardManager = (ClipboardManager) view.getContext().getSystemService(view.getContext().CLIPBOARD_SERVICE);
-
+                ClipboardManager clipboardManager = (ClipboardManager) view.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 
                 // Copier la chaîne dans le presse-papiers
                 ClipData clip = ClipData.newPlainText("texte", favorite.url);
@@ -120,8 +95,6 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
 
                 return true;
             });
-
-
         }
     }
 }

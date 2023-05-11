@@ -16,5 +16,6 @@
     <string name="type_de_contrat">Type de contrat</string>
     <string name="qualification_code">Qualification code</string>
     <string name="d_partement">Département</string>
+    <string name="filtrer">Filtrer</string>
 
 </resources>
