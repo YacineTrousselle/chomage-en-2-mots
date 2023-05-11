@@ -15,6 +15,13 @@
     <string name="qualification_code">Qualification code</string>
     <string name="d_partement">Département</string>
     <string name="filtrer">Filtrer</string>
-    <string name="summary">Cette application permet de rechercher et consulter des offres Pôle Emploi. Une connexion internet est requise. La première page contient une barre de recherche ainsi que cette présentation. Lorsqu\'une recherche est effectué, une liste d\'offres apparaît. Il est possible de filtrer les résultats en se rendant dans les paramètres de l\'application En cliquant sur une offre une page de détails s\'affiche. Une offre peut être ajouter aux favoris. La liste des favoris est accesible hors-ligne. Il est possible de les filtrer.</string>
+    <string name="summary">Cette application permet de rechercher et consulter des offres Pôle Emploi.\n
+        Une connexion internet est requise.\n
+        La première page contient une barre de recherche ainsi que cette présentation.\n
+        Lorsqu\'une recherche est effectué, une liste d\'offres apparaît.\n
+        Il est possible de filtrer les résultats en se rendant dans les paramètres de l\'application.\n
+        En cliquant sur une offre une page de détails s\'affiche. Une offre peut être ajouter aux favoris.\n
+        La liste des favoris est accesible hors-ligne. Il est possible de les filtrer.\n
+    </string>
 
 </resources>
